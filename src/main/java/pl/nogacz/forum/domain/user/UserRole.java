@@ -7,11 +7,13 @@ import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@Entity(name = "user_roles")
+@Entity(name = "roles")
 public class UserRole implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,9 +24,9 @@ public class UserRole implements GrantedAuthority {
     @Column(name = "role")
     private Role role;
 
-    @ManyToOne
-    @JoinColumn(name="user_id")
-    private User user;
+    @NotNull
+    @ManyToMany(mappedBy = "authorities")
+    private Collection<User> users = new ArrayList<>();
 
     @Override
     public String getAuthority() {

@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import pl.nogacz.forum.config.authentication.util.AuthenticationEntryPoint;
 import pl.nogacz.forum.config.authentication.util.RequestFilter;
+import pl.nogacz.forum.domain.user.Role;
 import pl.nogacz.forum.service.UserService;
 
 @Configuration
@@ -49,17 +50,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf()
                     .disable()
                 .authorizeRequests()
-                    .antMatchers("/login", "/register")
-                    .permitAll()
+                    .antMatchers("*").permitAll()
+                    .antMatchers("/user/**").hasRole(Role.USER.toString())
+                    .antMatchers("/admin/**").hasRole(Role.ADMIN.toString())
+                    .antMatchers("/moderator/**").hasRole(Role.MODERATOR.toString())
                 .anyRequest()
-                    .authenticated()
-                    .and()
+                    .authenticated().and()
                 .exceptionHandling()
-                    .authenticationEntryPoint(this.authenticationEntryPoint)
-                    .and()
+                    .authenticationEntryPoint(this.authenticationEntryPoint).and()
                 .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                    .and()
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .addFilterBefore(this.requestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }

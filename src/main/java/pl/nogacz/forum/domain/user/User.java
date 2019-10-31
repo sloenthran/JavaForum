@@ -48,11 +48,14 @@ public class User implements UserDetails {
     @Column(name = "account_enabled")
     private boolean enabled;
 
-    @NotNull
-    @OneToMany(
-            targetEntity = UserRole.class,
-            mappedBy = "user",
+    @ManyToMany(
+            cascade = CascadeType.ALL,
             fetch = FetchType.EAGER
+    )
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Collection<UserRole> authorities = new ArrayList<>();
 }
