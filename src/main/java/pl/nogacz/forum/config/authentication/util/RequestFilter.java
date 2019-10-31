@@ -1,4 +1,4 @@
-package pl.nogacz.forum.config.authentication;
+package pl.nogacz.forum.config.authentication.util;
 
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import pl.nogacz.forum.domain.user.User;
 import pl.nogacz.forum.service.UserService;
 
 import javax.servlet.FilterChain;

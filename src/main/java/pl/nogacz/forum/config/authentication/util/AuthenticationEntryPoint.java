@@ -1,4 +1,4 @@
-package pl.nogacz.forum.config.authentication;
+package pl.nogacz.forum.config.authentication.util;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;

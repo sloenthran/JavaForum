@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.nogacz.forum.dto.authentication.AuthenticationRequestDto;
 import pl.nogacz.forum.dto.authentication.AuthenticationResponseDto;
 import pl.nogacz.forum.exception.authentication.InvalidCredentialsException;
-import pl.nogacz.forum.config.authentication.TokenUtil;
+import pl.nogacz.forum.config.authentication.util.TokenUtil;
 import pl.nogacz.forum.service.UserService;
 
 @RestController
