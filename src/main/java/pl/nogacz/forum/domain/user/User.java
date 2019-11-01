@@ -32,7 +32,7 @@ public class User implements UserDetails {
     private String email;
 
     @NotNull
-    @Column(name = "account_locked")
+    @Column(name = "account_non_locked")
     private boolean accountNonLocked;
 
     @NotNull

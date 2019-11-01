@@ -21,6 +21,7 @@ public class UserRole implements GrantedAuthority {
 
     @NotNull
     @Column(name = "role")
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     @NotNull

@@ -27,15 +27,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private UserService userService;
     private AuthenticationEntryPoint authenticationEntryPoint;
     private RequestFilter requestFilter;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder authentication) throws Exception {
         authentication.userDetailsService(this.userService).passwordEncoder(this.passwordEncoder());
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    private PasswordEncoder passwordEncoder() {
+        return passwordEncoder;
     }
 
     @Bean
