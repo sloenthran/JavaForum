@@ -9,11 +9,11 @@ import pl.nogacz.forum.domain.user.Role;
 import pl.nogacz.forum.domain.user.User;
 import pl.nogacz.forum.domain.user.UserRole;
 import pl.nogacz.forum.dto.authentication.RegisterRequestDto;
-import pl.nogacz.forum.exception.user.validation.BadEmailException;
-import pl.nogacz.forum.exception.user.validation.PasswordTooShortException;
-import pl.nogacz.forum.exception.user.validation.UserEmailExistException;
+import pl.nogacz.forum.exception.validation.BadEmailException;
+import pl.nogacz.forum.exception.validation.PasswordTooShortException;
+import pl.nogacz.forum.exception.validation.EmailExistException;
 import pl.nogacz.forum.exception.user.UserRoleNotFoundException;
-import pl.nogacz.forum.exception.user.validation.UserUsernameExistException;
+import pl.nogacz.forum.exception.validation.UsernameExistException;
 import pl.nogacz.forum.repository.user.UserRepository;
 import pl.nogacz.forum.repository.user.UserRoleRepository;
 
@@ -39,7 +39,7 @@ public class UserService implements UserDetailsService {
 
     public User registerUser(final RegisterRequestDto registerRequestDto) throws Exception {
         if(this.userRepository.existsByUsername(registerRequestDto.getUsername())) {
-            throw new UserUsernameExistException();
+            throw new UsernameExistException();
         }
 
         if(!EmailValidator.getInstance().isValid(registerRequestDto.getEmail())) {
@@ -47,7 +47,7 @@ public class UserService implements UserDetailsService {
         }
 
         if(this.userRepository.existsByEmail(registerRequestDto.getEmail())) {
-            throw new UserEmailExistException();
+            throw new EmailExistException();
         }
 
         if(registerRequestDto.getPassword().length() < 6) {

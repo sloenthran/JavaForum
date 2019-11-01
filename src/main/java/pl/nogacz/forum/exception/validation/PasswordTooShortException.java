@@ -1,4 +1,4 @@
-package pl.nogacz.forum.exception.user.validation;
+package pl.nogacz.forum.exception.validation;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
