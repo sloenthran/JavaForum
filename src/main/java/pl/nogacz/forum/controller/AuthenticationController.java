@@ -14,7 +14,6 @@ import pl.nogacz.forum.dto.authentication.RegisterRequestDto;
 import pl.nogacz.forum.dto.user.UserDto;
 import pl.nogacz.forum.exception.authentication.InvalidCredentialsException;
 import pl.nogacz.forum.config.authentication.util.TokenUtil;
-import pl.nogacz.forum.exception.user.UserRoleNotFoundException;
 import pl.nogacz.forum.mapper.UserMapper;
 import pl.nogacz.forum.service.UserService;
 
@@ -43,7 +42,7 @@ public class AuthenticationController {
     }
 
     @PutMapping(value = "register")
-    public UserDto register(@RequestBody RegisterRequestDto registerRequestDto) throws UserRoleNotFoundException {
+    public UserDto register(@RequestBody RegisterRequestDto registerRequestDto) throws Exception {
         User user = this.userService.registerUser(registerRequestDto);
         return this.userMapper.mapUserToUserDto(user);
     }
