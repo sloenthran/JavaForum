@@ -2,12 +2,14 @@ package pl.nogacz.forum.domain.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
+@NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Entity(name = "roles")

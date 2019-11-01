@@ -7,6 +7,7 @@ import pl.nogacz.forum.domain.user.Role;
 import pl.nogacz.forum.domain.user.User;
 import pl.nogacz.forum.domain.user.UserRole;
 import pl.nogacz.forum.repository.user.UserRepository;
+import pl.nogacz.forum.repository.user.UserRoleRepository;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 public class UserService implements UserDetailsService {
     private UserRepository userRepository;
+    private UserRoleRepository userRoleRepository;
 
     public User loadUserByUsername(final String username) {
         //TODO REMOVE IT
@@ -37,6 +39,11 @@ public class UserService implements UserDetailsService {
                     roles
             );
         }
+
         return this.userRepository.findByUsername(username).orElse(null);
     }
+
+/*    public UserRole loadUserRoleByRole(final Role role) {
+        return this.
+    }*/
 }
