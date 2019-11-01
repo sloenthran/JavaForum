@@ -26,7 +26,6 @@ dependencies {
     annotationProcessor('org.projectlombok:lombok')
 
     //Databases
-    implementation('mysql:mysql-connector-java')
     implementation('com.h2database:h2')
 
     //Tests

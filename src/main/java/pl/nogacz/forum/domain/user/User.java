@@ -2,15 +2,12 @@ package pl.nogacz.forum.domain.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
-@NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Entity(name = "users")
@@ -57,5 +54,5 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Collection<UserRole> authorities = new ArrayList<>();
+    private List<UserRole> authorities;
 }

@@ -1,4 +1,4 @@
-package pl.nogacz.forum.repository;
+package pl.nogacz.forum.repository.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
