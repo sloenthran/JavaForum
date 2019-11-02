@@ -15,7 +15,7 @@ import pl.nogacz.forum.service.UserService;
 @CrossOrigin("*")
 @AllArgsConstructor
 @RequestMapping(
-        value = "/user",
+        value = "/user/",
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE
 )
@@ -23,7 +23,7 @@ public class UserController {
     private UserService userService;
     private UserMapper userMapper;
 
-    @GetMapping(value = "/me")
+    @GetMapping(value = "me")
     public UserDto getInfoOfActualUser(@Autowired Authentication authentication) throws UserNotFoundException {
         User user = userService.loadUserByUsername(authentication.getName());
 

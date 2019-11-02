@@ -9,6 +9,7 @@ import pl.nogacz.forum.domain.user.Role;
 import pl.nogacz.forum.domain.user.User;
 import pl.nogacz.forum.domain.user.UserRole;
 import pl.nogacz.forum.dto.authentication.RegisterRequestDto;
+import pl.nogacz.forum.exception.user.UserNotFoundException;
 import pl.nogacz.forum.exception.validation.BadEmailException;
 import pl.nogacz.forum.exception.validation.PasswordTooShortException;
 import pl.nogacz.forum.exception.validation.EmailExistException;
@@ -28,6 +29,10 @@ public class UserService implements UserDetailsService {
     private UserRepository userRepository;
     private UserRoleRepository userRoleRepository;
     private PasswordEncoder passwordEncoder;
+
+    public User loadUserById(final Long id) throws UserNotFoundException {
+        return this.userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+    }
 
     public User loadUserByUsername(final String username) {
         return this.userRepository.findByUsername(username).orElse(null);
@@ -79,5 +84,12 @@ public class UserService implements UserDetailsService {
 
     public UserRole saveUserRole(final UserRole userRole) {
         return this.userRoleRepository.save(userRole);
+    }
+
+    public void deleteUserById(final Long id) throws UserNotFoundException {
+        User user = this.loadUserById(id);
+        user.getAuthorities().removeAll(user.getAuthorities());
+
+        this.userRepository.delete(user);
     }
 }
