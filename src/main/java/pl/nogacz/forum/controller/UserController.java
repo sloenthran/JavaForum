@@ -6,6 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import pl.nogacz.forum.domain.user.User;
+import pl.nogacz.forum.dto.user.UserChangePasswordDto;
 import pl.nogacz.forum.dto.user.UserDto;
 import pl.nogacz.forum.exception.user.UserNotFoundException;
 import pl.nogacz.forum.mapper.UserMapper;
@@ -25,12 +26,17 @@ public class UserController {
 
     @GetMapping(value = "me")
     public UserDto getInfoOfActualUser(@Autowired Authentication authentication) throws UserNotFoundException {
-        User user = userService.loadUserByUsername(authentication.getName());
+        User user = this.userService.loadUserByUsername(authentication.getName());
 
         if(user == null) {
             throw new UserNotFoundException();
         } else {
-            return userMapper.mapUserToUserDto(user);
+            return this.userMapper.mapUserToUserDto(user);
         }
+    }
+
+    @PutMapping(value = "change_password")
+    public boolean changePassword(@Autowired Authentication authentication, @RequestBody UserChangePasswordDto userChangePasswordDto) throws Exception {
+        return this.userService.changePassword(authentication.getName(), userChangePasswordDto);
     }
 }

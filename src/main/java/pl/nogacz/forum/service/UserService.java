@@ -9,12 +9,10 @@ import pl.nogacz.forum.domain.user.Role;
 import pl.nogacz.forum.domain.user.User;
 import pl.nogacz.forum.domain.user.UserRole;
 import pl.nogacz.forum.dto.authentication.RegisterRequestDto;
+import pl.nogacz.forum.dto.user.UserChangePasswordDto;
 import pl.nogacz.forum.exception.user.UserNotFoundException;
-import pl.nogacz.forum.exception.validation.BadEmailException;
-import pl.nogacz.forum.exception.validation.PasswordTooShortException;
-import pl.nogacz.forum.exception.validation.EmailExistException;
+import pl.nogacz.forum.exception.validation.*;
 import pl.nogacz.forum.exception.user.UserRoleNotFoundException;
-import pl.nogacz.forum.exception.validation.UsernameExistException;
 import pl.nogacz.forum.repository.user.UserRepository;
 import pl.nogacz.forum.repository.user.UserRoleRepository;
 
@@ -88,6 +86,27 @@ public class UserService implements UserDetailsService {
 
     public UserRole saveUserRole(final UserRole userRole) {
         return this.userRoleRepository.save(userRole);
+    }
+
+    public boolean changePassword(String username, final UserChangePasswordDto userChangePasswordDto) throws Exception {
+        if(userChangePasswordDto.getNewPassword().length() < 6) {
+            throw new PasswordTooShortException();
+        }
+
+        User user = this.loadUserByUsername(username);
+
+        if(user == null) {
+            throw new UserNotFoundException();
+        }
+
+        if(!user.getPassword().equals(this.passwordEncoder.encode(userChangePasswordDto.getOldPassword()))) {
+            throw new BadOldPasswordException();
+        }
+
+        user.setPassword(this.passwordEncoder.encode(userChangePasswordDto.getNewPassword()));
+        this.saveUser(user);
+
+        return true;
     }
 
     public void deleteUserById(final Long id) throws UserNotFoundException {
