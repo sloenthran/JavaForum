@@ -1,7 +1,6 @@
 package pl.nogacz.forum.service;
 
 import lombok.AllArgsConstructor;
-import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -41,6 +40,10 @@ public class UserService implements UserDetailsService {
 
     public UserRole loadUserRoleByRole(final Role role) throws UserRoleNotFoundException {
         return this.userRoleRepository.findByRole(role).orElseThrow(UserRoleNotFoundException::new);
+    }
+
+    public UserRole loadUserRoleByRoleWithoutException(final Role role) {
+        return this.userRoleRepository.findByRole(role).orElse(null);
     }
 
     public List<User> loadUsers() {
