@@ -85,6 +85,72 @@ public class AuthenticationControllerTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void loginWithBadUser() throws Exception {
+        //Given
+        AuthenticationRequestDto authenticationRequestDto = new AuthenticationRequestDto(
+                "sloenthran123",
+                "password"
+        );
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity httpEntity = new HttpEntity(authenticationRequestDto, headers);
+
+        //When
+        ResponseEntity<String> responseEntity = this.restTemplate.exchange("http://localhost:" + this.serverPort + "/login", HttpMethod.POST, httpEntity, String.class);
+
+        //Then
+        assertEquals(HttpStatus.CONFLICT, responseEntity.getStatusCode());
+        assertTrue(responseEntity.hasBody());
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void loginWithBadPass() throws Exception {
+        //Given
+        AuthenticationRequestDto authenticationRequestDto = new AuthenticationRequestDto(
+                "sloenthran",
+                "password123"
+        );
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity httpEntity = new HttpEntity(authenticationRequestDto, headers);
+
+        //When
+        ResponseEntity<String> responseEntity = this.restTemplate.exchange("http://localhost:" + this.serverPort + "/login", HttpMethod.POST, httpEntity, String.class);
+
+        //Then
+        assertEquals(HttpStatus.CONFLICT, responseEntity.getStatusCode());
+        assertTrue(responseEntity.hasBody());
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void loginWithBadUserAndPass() throws Exception {
+        //Given
+        AuthenticationRequestDto authenticationRequestDto = new AuthenticationRequestDto(
+                "sloenthran123",
+                "password123"
+        );
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity httpEntity = new HttpEntity(authenticationRequestDto, headers);
+
+        //When
+        ResponseEntity<String> responseEntity = this.restTemplate.exchange("http://localhost:" + this.serverPort + "/login", HttpMethod.POST, httpEntity, String.class);
+
+        //Then
+        assertEquals(HttpStatus.CONFLICT, responseEntity.getStatusCode());
+        assertTrue(responseEntity.hasBody());
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void register() throws Exception {
         //Given
         RegisterRequestDto registerRequestDto = new RegisterRequestDto(
@@ -110,5 +176,97 @@ public class AuthenticationControllerTest {
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertTrue(responseEntity.hasBody());
         assertEquals(2, countUsersAfterRegister);
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void registerWithBadEmail() throws Exception {
+        //Given
+        RegisterRequestDto registerRequestDto = new RegisterRequestDto(
+                "sloenthran123",
+                "password123",
+                "sloenthranXgmail.com"
+        );
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity httpEntity = new HttpEntity(registerRequestDto, headers);
+
+        //When
+        ResponseEntity<String> responseEntity = this.restTemplate.exchange("http://localhost:" + this.serverPort + "/register", HttpMethod.PUT, httpEntity, String.class);
+
+        //Then
+        assertEquals(HttpStatus.CONFLICT, responseEntity.getStatusCode());
+        assertTrue(responseEntity.hasBody());
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void registerWithExistEmail() throws Exception {
+        //Given
+        RegisterRequestDto registerRequestDto = new RegisterRequestDto(
+                "sloenthran123",
+                "password123",
+                "sloenthran@gmail.com"
+        );
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity httpEntity = new HttpEntity(registerRequestDto, headers);
+
+        //When
+        ResponseEntity<String> responseEntity = this.restTemplate.exchange("http://localhost:" + this.serverPort + "/register", HttpMethod.PUT, httpEntity, String.class);
+
+        //Then
+        assertEquals(HttpStatus.CONFLICT, responseEntity.getStatusCode());
+        assertTrue(responseEntity.hasBody());
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void registerWithTooShortPassword() throws Exception {
+        //Given
+        RegisterRequestDto registerRequestDto = new RegisterRequestDto(
+                "sloenthran123",
+                "pass",
+                "sloenthran123@gmail.com"
+        );
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity httpEntity = new HttpEntity(registerRequestDto, headers);
+
+        //When
+        ResponseEntity<String> responseEntity = this.restTemplate.exchange("http://localhost:" + this.serverPort + "/register", HttpMethod.PUT, httpEntity, String.class);
+
+        //Then
+        assertEquals(HttpStatus.CONFLICT, responseEntity.getStatusCode());
+        assertTrue(responseEntity.hasBody());
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void registerWithUsernameExist() throws Exception {
+        //Given
+        RegisterRequestDto registerRequestDto = new RegisterRequestDto(
+                "sloenthran",
+                "password123",
+                "sloenthran123@gmail.com"
+        );
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity httpEntity = new HttpEntity(registerRequestDto, headers);
+
+        //When
+        ResponseEntity<String> responseEntity = this.restTemplate.exchange("http://localhost:" + this.serverPort + "/register", HttpMethod.PUT, httpEntity, String.class);
+
+        //Then
+        assertEquals(HttpStatus.CONFLICT, responseEntity.getStatusCode());
+        assertTrue(responseEntity.hasBody());
     }
 }
