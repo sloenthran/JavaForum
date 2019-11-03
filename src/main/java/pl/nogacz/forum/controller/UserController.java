@@ -6,6 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import pl.nogacz.forum.domain.user.User;
+import pl.nogacz.forum.dto.user.UserChangeEmailDto;
 import pl.nogacz.forum.dto.user.UserChangePasswordDto;
 import pl.nogacz.forum.dto.user.UserDto;
 import pl.nogacz.forum.exception.user.UserNotFoundException;
@@ -35,8 +36,13 @@ public class UserController {
         }
     }
 
-    @PutMapping(value = "change_password")
+    @PutMapping(value = "change/password")
     public boolean changePassword(@Autowired Authentication authentication, @RequestBody UserChangePasswordDto userChangePasswordDto) throws Exception {
         return this.userService.changePassword(authentication.getName(), userChangePasswordDto);
+    }
+
+    @PutMapping(value = "change/email")
+    public boolean changeEmail(@Autowired Authentication authentication, @RequestBody UserChangeEmailDto userChangeEmailDto) throws Exception {
+        return this.userService.changeEmail(authentication.getName(), userChangeEmailDto);
     }
 }
