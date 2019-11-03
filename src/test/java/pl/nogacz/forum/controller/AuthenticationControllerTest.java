@@ -203,6 +203,52 @@ public class AuthenticationControllerTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void registerWithDisposableEmail() throws Exception {
+        //Given
+        RegisterRequestDto registerRequestDto = new RegisterRequestDto(
+                "sloenthran123",
+                "password123",
+                "wbt73355@eveav.com"
+        );
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity httpEntity = new HttpEntity(registerRequestDto, headers);
+
+        //When
+        ResponseEntity<String> responseEntity = this.restTemplate.exchange("http://localhost:" + this.serverPort + "/register", HttpMethod.PUT, httpEntity, String.class);
+
+        //Then
+        assertEquals(HttpStatus.CONFLICT, responseEntity.getStatusCode());
+        assertTrue(responseEntity.hasBody());
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void registerWithEmailDomainNotFound() throws Exception {
+        //Given
+        RegisterRequestDto registerRequestDto = new RegisterRequestDto(
+                "sloenthran123",
+                "password123",
+                "sloenthran123@gmailu31u21uu312u.com"
+        );
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity httpEntity = new HttpEntity(registerRequestDto, headers);
+
+        //When
+        ResponseEntity<String> responseEntity = this.restTemplate.exchange("http://localhost:" + this.serverPort + "/register", HttpMethod.PUT, httpEntity, String.class);
+
+        //Then
+        assertEquals(HttpStatus.CONFLICT, responseEntity.getStatusCode());
+        assertTrue(responseEntity.hasBody());
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void registerWithExistEmail() throws Exception {
         //Given
         RegisterRequestDto registerRequestDto = new RegisterRequestDto(

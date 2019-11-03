@@ -18,7 +18,7 @@ public class EmailValidate {
     private EmailValidateConfig config;
     private RestTemplate restTemplate;
 
-    public void validEmail(String email) throws Exception  {
+    public boolean validEmail(String email) throws Exception  {
         HttpHeaders headers = new HttpHeaders();
 
         headers.add("x-rapidapi-host", this.config.getHost());
@@ -49,5 +49,7 @@ public class EmailValidate {
                 throw new BadEmailException();
             }
         }
+
+        return true;
     }
 }
