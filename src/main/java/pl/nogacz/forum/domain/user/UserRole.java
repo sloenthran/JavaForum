@@ -24,7 +24,6 @@ public class UserRole implements GrantedAuthority {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @NotNull
     @ManyToMany(mappedBy = "authorities")
     private List<User> users;
 

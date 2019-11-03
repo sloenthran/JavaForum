@@ -40,4 +40,10 @@ public class UserMapper {
                 .map(this::mapUserRoleToUserRoleDto)
                 .collect(Collectors.toList());
     }
+
+    public List<UserDto> mapListUserToListUserDto(final List<User> users) {
+        return users.stream()
+                .map(this::mapUserToUserDto)
+                .collect(Collectors.toList());
+    }
 }

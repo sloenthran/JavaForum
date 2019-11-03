@@ -42,6 +42,10 @@ public class UserService implements UserDetailsService {
         return this.userRoleRepository.findByRole(role).orElseThrow(UserRoleNotFoundException::new);
     }
 
+    public List<User> loadUsers() {
+        return this.userRepository.findAll();
+    }
+
     public User registerUser(final RegisterRequestDto registerRequestDto) throws Exception {
         if(this.userRepository.existsByUsername(registerRequestDto.getUsername())) {
             throw new UsernameExistException();
