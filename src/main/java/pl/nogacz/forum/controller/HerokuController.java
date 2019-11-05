@@ -9,9 +9,14 @@ import java.io.IOException;
 
 @RestController
 @CrossOrigin("*")
-public class RedirectController {
+public class HerokuController {
     @RequestMapping("/")
-    void homepage(HttpServletResponse response) throws IOException {
+    public void homepage(HttpServletResponse response) throws IOException {
         response.sendRedirect("https://sloenthran.github.io/JavaForum/");
+    }
+
+    @RequestMapping("/heroku/wakeUp")
+    public boolean wakeUp() {
+        return true;
     }
 }
