@@ -60,6 +60,14 @@ public class RequestFilter extends OncePerRequestFilter {
             }
         }
 
+        response.addHeader("Access-Control-Allow-Origin", "*");
+        response.addHeader("Access-Control-Allow-Methods","GET, OPTIONS, HEAD, PUT, POST");
+
+        if (request.getMethod().equals("OPTIONS")) {
+            response.setStatus(HttpServletResponse.SC_ACCEPTED);
+            return;
+        }
+
         chain.doFilter(request, response);
     }
 }
