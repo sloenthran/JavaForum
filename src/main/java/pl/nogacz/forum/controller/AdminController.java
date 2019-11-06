@@ -29,6 +29,6 @@ public class AdminController {
 
     @GetMapping("users")
     public List<UserDto> getUsers() {
-        return userMapper.mapListUserToListUserDto(userService.loadUsers());
+        return this.userMapper.mapListUserToListUserDto(this.userService.loadUsers());
     }
 }

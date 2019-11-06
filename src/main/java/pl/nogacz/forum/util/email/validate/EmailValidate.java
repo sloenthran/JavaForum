@@ -24,14 +24,14 @@ public class EmailValidate {
         headers.add("x-rapidapi-host", this.config.getHost());
         headers.add("x-rapidapi-key", this.config.getKey());
 
-        Request request = new Request(email);
+        EmailValidateRequest request = new EmailValidateRequest(email);
 
         HttpEntity httpEntity = new HttpEntity(request, headers);
 
-        ResponseEntity<Response> responseEntity = this.restTemplate.exchange(this.config.getUrl(), HttpMethod.POST, httpEntity, Response.class);
+        ResponseEntity<EmailValidateResponse> responseEntity = this.restTemplate.exchange(this.config.getUrl(), HttpMethod.POST, httpEntity, EmailValidateResponse.class);
 
         if(responseEntity.hasBody() && responseEntity.getStatusCode().is2xxSuccessful()) {
-            Response response = responseEntity.getBody();
+            EmailValidateResponse response = responseEntity.getBody();
 
             if(response.isDisposable()) {
                 throw new EmailDisposableException();
