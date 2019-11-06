@@ -15,7 +15,7 @@ public class HerokuScheduler {
         this.restTemplate = restTemplate;
     }
 
-    @Scheduled(cron = "* */15 * * * *")
+    @Scheduled(cron = "0 */15 * * * *")
     public void wakeUp() {
         this.restTemplate.getForObject("https://java-forum-application.herokuapp.com/heroku/wakeUp", String.class);
         LOGGER.info("App wakeUp");
