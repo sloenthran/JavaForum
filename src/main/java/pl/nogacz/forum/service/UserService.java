@@ -8,7 +8,6 @@ import pl.nogacz.forum.domain.user.Role;
 import pl.nogacz.forum.domain.user.User;
 import pl.nogacz.forum.domain.user.UserRole;
 import pl.nogacz.forum.dto.authentication.RegisterRequestDto;
-import pl.nogacz.forum.dto.user.UserChangeEmailDto;
 import pl.nogacz.forum.dto.user.UserChangePasswordDto;
 import pl.nogacz.forum.exception.user.UserNotFoundException;
 import pl.nogacz.forum.exception.validation.*;
@@ -101,8 +100,8 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
-    public boolean changeEmail(String username, final UserChangeEmailDto userChangeEmailDto) throws Exception {
-        this.validEmail(userChangeEmailDto.getEmail());
+    public boolean changeEmail(String username, final String email) throws Exception {
+        this.validEmail(email);
 
         User user = this.loadUserByUsername(username);
 
@@ -110,7 +109,7 @@ public class UserService implements UserDetailsService {
             throw new UserNotFoundException();
         }
 
-        user.setEmail(userChangeEmailDto.getEmail());
+        user.setEmail(email);
         this.saveUser(user);
 
         return true;
