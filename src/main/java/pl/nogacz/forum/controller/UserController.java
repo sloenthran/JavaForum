@@ -43,6 +43,7 @@ public class UserController {
 
     @PutMapping(value = "change/email")
     public boolean changeEmail(@Autowired Authentication authentication, @RequestBody UserChangeEmailDto userChangeEmailDto) throws Exception {
+        System.out.println(userChangeEmailDto.getEmail());
         return this.userService.changeEmail(authentication.getName(), userChangeEmailDto);
     }
 }
