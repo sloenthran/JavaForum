@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
+import pl.nogacz.forum.domain.post.Comment;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -57,4 +58,13 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private List<UserRole> authorities;
+
+
+    @OneToMany(
+            targetEntity = Comment.class,
+            cascade = CascadeType.PERSIST,
+            mappedBy = "user",
+            fetch = FetchType.LAZY
+    )
+    private List<Comment> comments;
 }

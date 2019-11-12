@@ -67,7 +67,8 @@ public class UserService implements UserDetailsService {
                 true,
                 true,
                 true,
-                authorities
+                authorities,
+                new ArrayList<>()
         );
 
         return this.saveUser(user);
