@@ -16,6 +16,7 @@ import pl.nogacz.forum.domain.user.User;
 import pl.nogacz.forum.domain.user.UserRole;
 import pl.nogacz.forum.dto.authentication.AuthenticationRequestDto;
 import pl.nogacz.forum.dto.authentication.RegisterRequestDto;
+import pl.nogacz.forum.service.UserRoleService;
 import pl.nogacz.forum.service.UserService;
 
 import java.util.ArrayList;
@@ -36,12 +37,15 @@ public class AuthenticationControllerTest {
     private UserService userService;
 
     @Autowired
+    private UserRoleService userRoleService;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Before
     public void prepareDatabase() throws Exception {
         UserRole userRole = new UserRole(1L, Role.USER, new ArrayList<>());
-        this.userService.saveUserRole(userRole);
+        this.userRoleService.saveUserRole(userRole);
 
         List<UserRole> authorities = new ArrayList<>();
         authorities.add(userRole);
@@ -55,7 +59,8 @@ public class AuthenticationControllerTest {
                 true,
                 true,
                 true,
-                authorities
+                authorities,
+                new ArrayList<>()
         );
 
         this.userService.saveUser(user);

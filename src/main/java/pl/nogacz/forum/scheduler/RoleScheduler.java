@@ -1,33 +1,26 @@
 package pl.nogacz.forum.scheduler;
 
-import org.springframework.scheduling.annotation.Scheduled;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.nogacz.forum.domain.user.Role;
 import pl.nogacz.forum.domain.user.UserRole;
-import pl.nogacz.forum.service.UserService;
+import pl.nogacz.forum.service.UserRoleService;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 
-@Component 
+@Component
+@AllArgsConstructor
 public class RoleScheduler {
-    private UserService userService;
-    private boolean isRunned = false;
+    private UserRoleService userRoleService;
 
-    public RoleScheduler(UserService userService) {
-        this.userService = userService;
-    }
-
-    @Scheduled(cron = "* * * * * *")
+    @PostConstruct
     public void checkRoleExists() {
-        if(!isRunned) {
-            for(Role role : Role.values()) {
-                if(this.userService.loadUserRoleByRoleWithoutException(role) == null) {
-                    UserRole userRole = new UserRole(null, role, new ArrayList<>());
-                    this.userService.saveUserRole(userRole);
-                }
+        for(Role role : Role.values()) {
+            if(this.userRoleService.loadUserRoleByRoleWithoutException(role) == null) {
+                UserRole userRole = new UserRole(null, role, new ArrayList<>());
+                this.userRoleService.saveUserRole(userRole);
             }
-
-            this.isRunned = true;
         }
     }
 }
