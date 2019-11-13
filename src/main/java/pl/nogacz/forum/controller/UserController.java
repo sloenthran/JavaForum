@@ -10,7 +10,7 @@ import pl.nogacz.forum.dto.user.UserChangePasswordDto;
 import pl.nogacz.forum.dto.user.UserDto;
 import pl.nogacz.forum.exception.user.UserNotFoundException;
 import pl.nogacz.forum.mapper.UserMapper;
-import pl.nogacz.forum.service.UserService;
+import pl.nogacz.forum.service.user.UserService;
 
 @RestController
 @CrossOrigin("*")

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
@@ -20,6 +21,7 @@ public class Topic {
 
     @NotNull
     @Column(name = "tag")
+    @Enumerated(EnumType.STRING)
     private Tag tag;
 
     @NotNull
@@ -33,5 +35,5 @@ public class Topic {
             mappedBy = "topic",
             fetch = FetchType.EAGER
     )
-    private List<Comment> comments;
+    private List<Comment> comments = new ArrayList<>();
 }

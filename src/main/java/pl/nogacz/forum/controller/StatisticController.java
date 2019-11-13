@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.nogacz.forum.mapper.UserMapper;
-import pl.nogacz.forum.service.UserService;
+import pl.nogacz.forum.service.user.UserService;
 import pl.nogacz.forum.util.email.validate.EmailValidate;
 
 @RestController

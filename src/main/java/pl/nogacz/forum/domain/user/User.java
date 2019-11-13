@@ -8,6 +8,7 @@ import pl.nogacz.forum.domain.post.Comment;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
@@ -57,7 +58,7 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private List<UserRole> authorities;
+    private List<UserRole> authorities = new ArrayList<>();
 
 
     @OneToMany(
@@ -66,5 +67,5 @@ public class User implements UserDetails {
             mappedBy = "user",
             fetch = FetchType.LAZY
     )
-    private List<Comment> comments;
+    private List<Comment> comments = new ArrayList<>();
 }

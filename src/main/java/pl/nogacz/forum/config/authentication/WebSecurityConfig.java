@@ -16,7 +16,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import pl.nogacz.forum.config.authentication.util.AuthenticationEntryPoint;
 import pl.nogacz.forum.config.authentication.util.RequestFilter;
 import pl.nogacz.forum.domain.user.Role;
-import pl.nogacz.forum.service.UserService;
+import pl.nogacz.forum.service.user.UserService;
 
 @Configuration
 @EnableWebSecurity

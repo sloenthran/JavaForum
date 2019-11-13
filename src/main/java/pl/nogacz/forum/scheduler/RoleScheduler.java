@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.nogacz.forum.domain.user.Role;
 import pl.nogacz.forum.domain.user.UserRole;
-import pl.nogacz.forum.service.UserRoleService;
+import pl.nogacz.forum.service.user.UserRoleService;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;

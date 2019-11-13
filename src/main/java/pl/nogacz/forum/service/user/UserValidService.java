@@ -1,4 +1,4 @@
-package pl.nogacz.forum.service;
+package pl.nogacz.forum.service.user;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

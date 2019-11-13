@@ -1,7 +1,5 @@
 package pl.nogacz.forum.mapper;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import org.springframework.stereotype.Component;
 import pl.nogacz.forum.domain.user.User;
 import pl.nogacz.forum.domain.user.UserRole;
@@ -11,8 +9,6 @@ import pl.nogacz.forum.dto.user.UserRoleDto;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Data
-@AllArgsConstructor
 @Component
 public class UserMapper {
     public UserDto mapUserToUserDto(final User user) {
