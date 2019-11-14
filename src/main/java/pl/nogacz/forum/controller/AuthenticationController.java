@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.nogacz.forum.domain.user.User;
 import pl.nogacz.forum.dto.authentication.AuthenticationRequestDto;
 import pl.nogacz.forum.dto.authentication.AuthenticationResponseDto;
-import pl.nogacz.forum.dto.authentication.AuthenticationRegisterRequestDto;
+import pl.nogacz.forum.dto.authentication.RegisterRequestDto;
 import pl.nogacz.forum.dto.user.UserDto;
 import pl.nogacz.forum.exception.authentication.InvalidCredentialsException;
 import pl.nogacz.forum.config.authentication.util.TokenUtil;
@@ -43,7 +43,7 @@ public class AuthenticationController {
     }
 
     @PutMapping(value = "register")
-    public UserDto register(@RequestBody AuthenticationRegisterRequestDto registerRequestDto) throws Exception {
+    public UserDto register(@RequestBody RegisterRequestDto registerRequestDto) throws Exception {
         User user = this.userService.registerUser(registerRequestDto);
         return this.userMapper.mapUserToUserDto(user);
     }

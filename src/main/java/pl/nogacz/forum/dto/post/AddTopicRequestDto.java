@@ -5,6 +5,8 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class PostAddTopicResponseDto {
-    private Long topicId;
+public class AddTopicRequestDto {
+    private String title;
+    private String tag;
+    private String text;
 }

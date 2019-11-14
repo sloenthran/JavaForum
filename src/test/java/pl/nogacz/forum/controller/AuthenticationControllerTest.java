@@ -15,7 +15,7 @@ import pl.nogacz.forum.domain.user.Role;
 import pl.nogacz.forum.domain.user.User;
 import pl.nogacz.forum.domain.user.UserRole;
 import pl.nogacz.forum.dto.authentication.AuthenticationRequestDto;
-import pl.nogacz.forum.dto.authentication.AuthenticationRegisterRequestDto;
+import pl.nogacz.forum.dto.authentication.RegisterRequestDto;
 import pl.nogacz.forum.service.user.UserRoleService;
 import pl.nogacz.forum.service.user.UserService;
 
@@ -158,7 +158,7 @@ public class AuthenticationControllerTest {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void register() throws Exception {
         //Given
-        AuthenticationRegisterRequestDto registerRequestDto = new AuthenticationRegisterRequestDto(
+        RegisterRequestDto registerRequestDto = new RegisterRequestDto(
                 "sloenthran123",
                 "password123",
                 "sloenthran123@gmail.com"
@@ -187,7 +187,7 @@ public class AuthenticationControllerTest {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void registerWithBadEmail() throws Exception {
         //Given
-        AuthenticationRegisterRequestDto registerRequestDto = new AuthenticationRegisterRequestDto(
+        RegisterRequestDto registerRequestDto = new RegisterRequestDto(
                 "sloenthran123",
                 "password123",
                 "sloenthranXgmail.com"
@@ -210,7 +210,7 @@ public class AuthenticationControllerTest {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void registerWithDisposableEmail() throws Exception {
         //Given
-        AuthenticationRegisterRequestDto registerRequestDto = new AuthenticationRegisterRequestDto(
+        RegisterRequestDto registerRequestDto = new RegisterRequestDto(
                 "sloenthran123",
                 "password123",
                 "wbt73355@eveav.com"
@@ -233,7 +233,7 @@ public class AuthenticationControllerTest {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void registerWithEmailDomainNotFound() throws Exception {
         //Given
-        AuthenticationRegisterRequestDto registerRequestDto = new AuthenticationRegisterRequestDto(
+        RegisterRequestDto registerRequestDto = new RegisterRequestDto(
                 "sloenthran123",
                 "password123",
                 "sloenthran123@gmailu31u21uu312u.com"
@@ -256,7 +256,7 @@ public class AuthenticationControllerTest {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void registerWithExistEmail() throws Exception {
         //Given
-        AuthenticationRegisterRequestDto registerRequestDto = new AuthenticationRegisterRequestDto(
+        RegisterRequestDto registerRequestDto = new RegisterRequestDto(
                 "sloenthran123",
                 "password123",
                 "sloenthran@gmail.com"
@@ -279,7 +279,7 @@ public class AuthenticationControllerTest {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void registerWithTooShortPassword() throws Exception {
         //Given
-        AuthenticationRegisterRequestDto registerRequestDto = new AuthenticationRegisterRequestDto(
+        RegisterRequestDto registerRequestDto = new RegisterRequestDto(
                 "sloenthran123",
                 "pass",
                 "sloenthran123@gmail.com"
@@ -302,7 +302,7 @@ public class AuthenticationControllerTest {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void registerWithUsernameExist() throws Exception {
         //Given
-        AuthenticationRegisterRequestDto registerRequestDto = new AuthenticationRegisterRequestDto(
+        RegisterRequestDto registerRequestDto = new RegisterRequestDto(
                 "sloenthran",
                 "password123",
                 "sloenthran123@gmail.com"

@@ -6,8 +6,8 @@ import pl.nogacz.forum.domain.post.Comment;
 import pl.nogacz.forum.domain.post.Tag;
 import pl.nogacz.forum.domain.post.Topic;
 import pl.nogacz.forum.domain.user.User;
-import pl.nogacz.forum.dto.post.PostAddTopicRequestDto;
-import pl.nogacz.forum.dto.post.PostAddTopicResponseDto;
+import pl.nogacz.forum.dto.post.AddTopicRequestDto;
+import pl.nogacz.forum.dto.post.AddTopicResponseDto;
 import pl.nogacz.forum.dto.post.TopicDto;
 import pl.nogacz.forum.exception.post.TagNotFoundException;
 import pl.nogacz.forum.mapper.PostMapper;
@@ -29,7 +29,7 @@ public class PostService {
     private UserService userService;
     private PostMapper postMapper;
 
-    public PostAddTopicResponseDto addPost(final String username, final PostAddTopicRequestDto postAddTopicDto) throws TagNotFoundException {
+    public AddTopicResponseDto addPost(final String username, final AddTopicRequestDto postAddTopicDto) throws TagNotFoundException {
         User user = this.userService.loadUserByUsername(username);
 
         Topic topic = new Topic(
@@ -51,7 +51,7 @@ public class PostService {
 
         this.commentRepository.save(comment);
 
-        return new PostAddTopicResponseDto(saveTopic.getId());
+        return new AddTopicResponseDto(saveTopic.getId());
     }
 
     private Tag getTagFromString(final String tagName) throws TagNotFoundException {

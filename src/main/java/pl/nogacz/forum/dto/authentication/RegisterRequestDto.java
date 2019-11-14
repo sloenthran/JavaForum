@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 
 @AllArgsConstructor
 @Data
-public class AuthenticationRegisterRequestDto {
+public class RegisterRequestDto {
     @NotNull
     private String username;
     @NotNull

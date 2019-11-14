@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import pl.nogacz.forum.domain.user.Role;
 import pl.nogacz.forum.domain.user.User;
 import pl.nogacz.forum.domain.user.UserRole;
-import pl.nogacz.forum.dto.authentication.AuthenticationRegisterRequestDto;
+import pl.nogacz.forum.dto.authentication.RegisterRequestDto;
 import pl.nogacz.forum.dto.user.UserChangePasswordDto;
 import pl.nogacz.forum.exception.user.UserNotFoundException;
 import pl.nogacz.forum.exception.validation.*;
@@ -38,7 +38,7 @@ public class UserService implements UserDetailsService {
         return this.userRepository.findAll();
     }
 
-    public User registerUser(final AuthenticationRegisterRequestDto registerRequestDto) throws Exception {
+    public User registerUser(final RegisterRequestDto registerRequestDto) throws Exception {
         this.userValidService.validUsername(registerRequestDto.getUsername());
         this.userValidService.validEmail(registerRequestDto.getEmail());
         this.userValidService.validPassword(registerRequestDto.getPassword());
