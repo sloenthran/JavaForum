@@ -8,7 +8,7 @@ import pl.nogacz.forum.domain.user.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,7 +27,7 @@ public class Comment {
 
     @NotNull
     @ManyToOne(
-            fetch = FetchType.EAGER,
+            fetch = FetchType.LAZY,
             cascade = CascadeType.ALL
     )
     @JoinColumn(name = "user_id")
@@ -35,11 +35,11 @@ public class Comment {
 
     @NotNull
     @Column(name = "created_date")
-    private LocalDate createdDate;
+    private LocalDateTime createdDate;
 
     @NotNull
     @ManyToOne(
-            fetch = FetchType.EAGER,
+            fetch = FetchType.LAZY,
             cascade = CascadeType.ALL
     )
     @JoinColumn(name = "topic_id")
