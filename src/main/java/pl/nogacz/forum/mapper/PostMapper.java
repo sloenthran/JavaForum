@@ -18,7 +18,7 @@ public class PostMapper {
                 topic.getTitle(),
                 topic.getComments().get(0).getCreatedDate(),
                 topic.getComments().get(0).getUser().getUsername(),
-                (long) topic.getComments().size(),
+                (long) topic.getComments().size() - 1,
                 topic.getViewedCount(),
                 topic.getLikesCount()
         );
