@@ -55,7 +55,7 @@ public class PostController {
 
     @PreAuthorize("hasAnyAuthority('USER')")
     @PostMapping("comment")
-    public void addComment(@Autowired Authentication authentication, @RequestBody AddCommentRequestDto addCommentDto) throws TopicNotFoundException {
-        this.postService.addComment(authentication.getName(), addCommentDto);
+    public AddCommentResponseDto addComment(@Autowired Authentication authentication, @RequestBody AddCommentRequestDto addCommentDto) throws TopicNotFoundException {
+         return this.postService.addComment(authentication.getName(), addCommentDto);
     }
 }

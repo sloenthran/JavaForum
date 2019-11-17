@@ -85,7 +85,7 @@ public class PostService {
         );
     }
 
-    public void addComment(final String username, final AddCommentRequestDto addCommentDto) throws TopicNotFoundException {
+    public AddCommentResponseDto addComment(final String username, final AddCommentRequestDto addCommentDto) throws TopicNotFoundException {
         User user = this.userService.loadUserByUsername(username);
         Topic topic = this.topicRepository.findById(addCommentDto.getTopicId()).orElseThrow(TopicNotFoundException::new);
 
@@ -98,5 +98,10 @@ public class PostService {
         );
 
         Comment saveComment = this.commentRepository.save(comment);
+
+        return new AddCommentResponseDto(
+                topic.getId(),
+                saveComment.getId()
+        );
     }
 }
