@@ -36,4 +36,10 @@ public class Topic {
             fetch = FetchType.EAGER
     )
     private List<Comment> comments = new ArrayList<>();
+
+    @Column(name = "viewed_count")
+    private Long viewedCount;
+
+    @Column(name = "likes_count")
+    private Long likesCount;
 }

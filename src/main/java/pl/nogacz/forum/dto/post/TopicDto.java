@@ -15,4 +15,6 @@ public class TopicDto {
     private LocalDateTime createdDate;
     private String createdBy;
     private Long commentsCount;
+    private Long viewedCount;
+    private Long likesCount;
 }

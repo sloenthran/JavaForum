@@ -6,10 +6,9 @@ import pl.nogacz.forum.domain.post.Comment;
 import pl.nogacz.forum.domain.post.Tag;
 import pl.nogacz.forum.domain.post.Topic;
 import pl.nogacz.forum.domain.user.User;
-import pl.nogacz.forum.dto.post.AddTopicRequestDto;
-import pl.nogacz.forum.dto.post.AddTopicResponseDto;
-import pl.nogacz.forum.dto.post.TopicDto;
+import pl.nogacz.forum.dto.post.*;
 import pl.nogacz.forum.exception.post.TagNotFoundException;
+import pl.nogacz.forum.exception.post.TopicNotFoundException;
 import pl.nogacz.forum.mapper.PostMapper;
 import pl.nogacz.forum.repository.post.CommentRepository;
 import pl.nogacz.forum.repository.post.TopicRepository;
@@ -36,7 +35,9 @@ public class PostService {
                 null,
                 this.getTagFromString(postAddTopicDto.getTag()),
                 postAddTopicDto.getTitle(),
-                new ArrayList<>()
+                new ArrayList<>(),
+                0L,
+                0L
         );
 
         Topic saveTopic = this.topicRepository.save(topic);
@@ -68,22 +69,16 @@ public class PostService {
 
     public List<TopicDto> getTopics() {
         List<Topic> topics = this.topicRepository.findAllByOrderByIdDesc();
-        List<TopicDto> topicsDto = new ArrayList<>();
 
-        for(Topic topic : topics) {
-            List<Comment> comments = this.commentRepository.getCommentByTopic_IdOrderByIdAsc(topic.getId());
-            Comment firstPost = comments.get(0);
+        return this.postMapper.mapListTopicToListTopicDto(topics);
+    }
 
-            TopicDto topicDto = this.postMapper.mapTopicToTopicDto(
-                    topic,
-                    firstPost.getCreatedDate(),
-                    firstPost.getUser().getUsername(),
-                    (long) comments.size()
-            );
+    public TopicWithCommentDto getTopic(Long topicId) throws TopicNotFoundException {
+        Topic topic = this.topicRepository.findById(topicId).orElseThrow(TopicNotFoundException::new);
 
-            topicsDto.add(topicDto);
-        }
-
-        return topicsDto;
+        return new TopicWithCommentDto(
+                this.postMapper.mapTopicToTopicDto(topic),
+                this.postMapper.mapListCommentToListCommentDto(topic.getComments())
+        );
     }
 }

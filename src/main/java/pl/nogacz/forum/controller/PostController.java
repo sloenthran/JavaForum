@@ -7,11 +7,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import pl.nogacz.forum.domain.post.Tag;
-import pl.nogacz.forum.dto.post.AddTopicRequestDto;
-import pl.nogacz.forum.dto.post.AddTopicResponseDto;
-import pl.nogacz.forum.dto.post.GetTagsResponseDto;
-import pl.nogacz.forum.dto.post.TopicDto;
+import pl.nogacz.forum.dto.post.*;
 import pl.nogacz.forum.exception.post.TagNotFoundException;
+import pl.nogacz.forum.exception.post.TopicNotFoundException;
 import pl.nogacz.forum.service.post.PostService;
 
 import java.util.ArrayList;
@@ -48,5 +46,10 @@ public class PostController {
         }
 
         return tags;
+    }
+
+    @GetMapping("topic")
+    public TopicWithCommentDto getTopic(@RequestParam Long topicId) throws TopicNotFoundException {
+        return this.postService.getTopic(topicId);
     }
 }
