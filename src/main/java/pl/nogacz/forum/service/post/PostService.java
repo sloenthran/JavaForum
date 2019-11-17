@@ -28,7 +28,7 @@ public class PostService {
     private UserService userService;
     private PostMapper postMapper;
 
-    public AddTopicResponseDto addPost(final String username, final AddTopicRequestDto postAddTopicDto) throws TagNotFoundException {
+    public AddTopicResponseDto addTopic(final String username, final AddTopicRequestDto postAddTopicDto) throws TagNotFoundException {
         User user = this.userService.loadUserByUsername(username);
 
         Topic topic = new Topic(
@@ -73,7 +73,7 @@ public class PostService {
         return this.postMapper.mapListTopicToListTopicDto(topics);
     }
 
-    public TopicWithCommentDto getTopic(Long topicId) throws TopicNotFoundException {
+    public TopicWithCommentDto getTopic(final Long topicId) throws TopicNotFoundException {
         Topic topic = this.topicRepository.findById(topicId).orElseThrow(TopicNotFoundException::new);
         topic.setViewedCount(topic.getViewedCount() + 1L);
 
@@ -83,5 +83,20 @@ public class PostService {
                 this.postMapper.mapTopicToTopicDto(topic),
                 this.postMapper.mapListCommentToListCommentDto(topic.getComments())
         );
+    }
+
+    public void addComment(final String username, final AddCommentRequestDto addCommentDto) throws TopicNotFoundException {
+        User user = this.userService.loadUserByUsername(username);
+        Topic topic = this.topicRepository.findById(addCommentDto.getTopicId()).orElseThrow(TopicNotFoundException::new);
+
+        Comment comment = new Comment(
+                null,
+                addCommentDto.getText(),
+                user,
+                LocalDateTime.now(),
+                topic
+        );
+
+        Comment saveComment = this.commentRepository.save(comment);
     }
 }

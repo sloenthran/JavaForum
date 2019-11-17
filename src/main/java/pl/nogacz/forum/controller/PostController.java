@@ -29,7 +29,7 @@ public class PostController {
     @PreAuthorize("hasAnyAuthority('USER')")
     @PostMapping("topic")
     public AddTopicResponseDto addTopic(@Autowired Authentication authentication, @RequestBody AddTopicRequestDto postAddTopicDto) throws TagNotFoundException {
-       return this.postService.addPost(authentication.getName(), postAddTopicDto);
+       return this.postService.addTopic(authentication.getName(), postAddTopicDto);
     }
 
     @GetMapping("topics")
@@ -51,5 +51,11 @@ public class PostController {
     @GetMapping("topic")
     public TopicWithCommentDto getTopic(@RequestParam Long topicId) throws TopicNotFoundException {
         return this.postService.getTopic(topicId);
+    }
+
+    @PreAuthorize("hasAnyAuthority('USER')")
+    @PostMapping("comment")
+    public void addComment(@Autowired Authentication authentication, @RequestBody AddCommentRequestDto addCommentDto) throws TopicNotFoundException {
+        this.postService.addComment(authentication.getName(), addCommentDto);
     }
 }
