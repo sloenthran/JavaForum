@@ -75,6 +75,9 @@ public class PostService {
 
     public TopicWithCommentDto getTopic(Long topicId) throws TopicNotFoundException {
         Topic topic = this.topicRepository.findById(topicId).orElseThrow(TopicNotFoundException::new);
+        topic.setViewedCount(topic.getViewedCount() + 1L);
+
+        this.topicRepository.save(topic);
 
         return new TopicWithCommentDto(
                 this.postMapper.mapTopicToTopicDto(topic),
