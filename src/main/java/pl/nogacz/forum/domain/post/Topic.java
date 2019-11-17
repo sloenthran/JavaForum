@@ -37,9 +37,11 @@ public class Topic {
     )
     private List<Comment> comments = new ArrayList<>();
 
+    @NotNull
     @Column(name = "viewed_count")
     private Long viewedCount;
 
+    @NotNull
     @Column(name = "likes_count")
     private Long likesCount;
 }
