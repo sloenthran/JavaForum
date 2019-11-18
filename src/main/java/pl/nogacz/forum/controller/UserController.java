@@ -3,6 +3,7 @@ package pl.nogacz.forum.controller;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import pl.nogacz.forum.domain.user.User;
@@ -11,6 +12,8 @@ import pl.nogacz.forum.dto.user.UserDto;
 import pl.nogacz.forum.exception.user.UserNotFoundException;
 import pl.nogacz.forum.mapper.UserMapper;
 import pl.nogacz.forum.service.user.UserService;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin("*")
@@ -43,5 +46,22 @@ public class UserController {
     @PutMapping(value = "change/email")
     public boolean changeEmail(@Autowired Authentication authentication, @RequestParam String email) throws Exception {
         return this.userService.changeEmail(authentication.getName(), email);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @DeleteMapping("user/{id}")
+    public void removeUser(@PathVariable("id") Long id) throws UserNotFoundException {
+        this.userService.deleteUserById(id);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'MODERATOR')")
+    @GetMapping("users")
+    public List<UserDto> getUsers() {
+        return this.userMapper.mapListUserToListUserDto(this.userService.loadUsers());
+    }
+
+    @GetMapping("users/count")
+    public Long getUsersCount() {
+        return this.userService.getCountUsers();
     }
 }
