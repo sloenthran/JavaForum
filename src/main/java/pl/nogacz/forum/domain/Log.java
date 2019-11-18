@@ -31,9 +31,8 @@ public class Log {
     private User user;
 
     @NotNull
-    @CreatedDate
     @Column(name = "date")
-    private LocalDateTime date;
+    private LocalDateTime date = LocalDateTime.now();
 
     @NotNull
     @Column(name = "message")
