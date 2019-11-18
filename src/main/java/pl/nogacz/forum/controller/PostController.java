@@ -48,8 +48,8 @@ public class PostController {
         return tags;
     }
 
-    @GetMapping("topic")
-    public TopicWithCommentDto getTopic(@RequestParam Long topicId) throws TopicNotFoundException {
+    @GetMapping("topic/{id}")
+    public TopicWithCommentDto getTopic(@PathVariable("id") Long topicId) throws TopicNotFoundException {
         return this.postService.getTopic(topicId);
     }
 
@@ -62,6 +62,12 @@ public class PostController {
     @PreAuthorize("hasAuthority('MODERATOR')")
     @PutMapping("comment")
     public void editComment(@Autowired Authentication authentication, @RequestBody EditCommentRequestDto editCommentRequestDto) {
+        //TODO
+    }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @DeleteMapping("comment/{id}")
+    public void deleteComment(@Autowired Authentication authentication,  @PathVariable("id") Long id) {
+        //TODO
     }
 }

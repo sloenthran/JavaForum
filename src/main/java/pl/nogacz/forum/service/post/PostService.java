@@ -15,7 +15,6 @@ import pl.nogacz.forum.repository.post.TopicRepository;
 import pl.nogacz.forum.service.user.UserService;
 
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
