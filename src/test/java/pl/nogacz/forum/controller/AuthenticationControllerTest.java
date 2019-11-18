@@ -60,6 +60,7 @@ public class AuthenticationControllerTest {
                 true,
                 true,
                 authorities,
+                new ArrayList<>(),
                 new ArrayList<>()
         );
 

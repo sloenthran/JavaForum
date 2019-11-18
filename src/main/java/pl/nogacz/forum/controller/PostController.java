@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import pl.nogacz.forum.domain.post.Tag;
 import pl.nogacz.forum.dto.post.*;
+import pl.nogacz.forum.exception.post.CommentNotFoundException;
 import pl.nogacz.forum.exception.post.TagNotFoundException;
 import pl.nogacz.forum.exception.post.TopicNotFoundException;
 import pl.nogacz.forum.service.post.PostService;
@@ -67,7 +68,9 @@ public class PostController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("comment/{id}")
-    public void deleteComment(@Autowired Authentication authentication,  @PathVariable("id") Long id) {
-        //TODO
+    public DeleteCommentResponseDto deleteComment(@Autowired Authentication authentication,  @PathVariable("id") Long id) throws CommentNotFoundException {
+        this.postService.deleteComment(authentication.getName(), id);
+
+        return new DeleteCommentResponseDto();
     }
 }

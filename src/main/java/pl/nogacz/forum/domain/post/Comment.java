@@ -37,9 +37,9 @@ public class Comment {
     private User user;
 
     @NotNull
-    @CreatedDate
     @Column(name = "created_date")
-    private LocalDateTime createdDate;
+    @Builder.Default
+    private LocalDateTime createdDate = LocalDateTime.now();
 
     @NotNull
     @ManyToOne(

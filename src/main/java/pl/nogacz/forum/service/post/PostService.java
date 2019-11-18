@@ -7,11 +7,13 @@ import pl.nogacz.forum.domain.post.Tag;
 import pl.nogacz.forum.domain.post.Topic;
 import pl.nogacz.forum.domain.user.User;
 import pl.nogacz.forum.dto.post.*;
+import pl.nogacz.forum.exception.post.CommentNotFoundException;
 import pl.nogacz.forum.exception.post.TagNotFoundException;
 import pl.nogacz.forum.exception.post.TopicNotFoundException;
 import pl.nogacz.forum.mapper.PostMapper;
 import pl.nogacz.forum.repository.post.CommentRepository;
 import pl.nogacz.forum.repository.post.TopicRepository;
+import pl.nogacz.forum.service.LogService;
 import pl.nogacz.forum.service.user.UserService;
 
 import javax.transaction.Transactional;
@@ -26,6 +28,7 @@ public class PostService {
     private CommentRepository commentRepository;
     private UserService userService;
     private PostMapper postMapper;
+    private LogService logService;
 
     public AddTopicResponseDto addTopic(final String username, final AddTopicRequestDto postAddTopicDto) throws TagNotFoundException {
         User user = this.userService.loadUserByUsername(username);
@@ -98,5 +101,16 @@ public class PostService {
                 topic.getId(),
                 saveComment.getId()
         );
+    }
+
+    public void deleteComment(final String username, final Long id) throws CommentNotFoundException {
+        User user = this.userService.loadUserByUsername(username);
+
+        Comment comment = this.commentRepository.findById(id).orElseThrow(CommentNotFoundException::new);
+
+        comment.getTopic().getComments().remove(comment);
+
+        this.commentRepository.delete(comment);
+        this.logService.addLog(user, "Deleted comment");
     }
 }
