@@ -1,10 +1,9 @@
-package pl.nogacz.forum.domain.post;
+package pl.nogacz.forum.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Type;
 import org.springframework.data.annotation.CreatedDate;
 import pl.nogacz.forum.domain.user.User;
 
@@ -15,18 +14,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@Entity(name = "comments")
+@Entity(name = "logs")
 @Builder
-public class Comment {
+public class Log {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-
-    @NotNull
-    @Column(name = "text", length = 65355, columnDefinition="TEXT")
-    @Type(type = "text")
-    private String text;
 
     @NotNull
     @ManyToOne(
@@ -38,14 +32,10 @@ public class Comment {
 
     @NotNull
     @CreatedDate
-    @Column(name = "created_date")
-    private LocalDateTime createdDate;
+    @Column(name = "date")
+    private LocalDateTime date;
 
     @NotNull
-    @ManyToOne(
-            fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL
-    )
-    @JoinColumn(name = "topic_id")
-    private Topic topic;
+    @Column(name = "message")
+    private String message;
 }

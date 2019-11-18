@@ -19,7 +19,6 @@ import java.util.List;
 @CrossOrigin("*")
 @AllArgsConstructor
 @RequestMapping(
-        value = "/user/",
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE
 )
@@ -27,7 +26,7 @@ public class UserController {
     private UserService userService;
     private UserMapper userMapper;
 
-    @GetMapping(value = "me")
+    @GetMapping(value = "/user/me")
     public UserDto getInfoOfActualUser(@Autowired Authentication authentication) throws UserNotFoundException {
         User user = this.userService.loadUserByUsername(authentication.getName());
 
@@ -38,24 +37,24 @@ public class UserController {
         }
     }
 
-    @PutMapping(value = "change/password")
+    @PutMapping(value = "/user/change/password")
     public boolean changePassword(@Autowired Authentication authentication, @RequestBody UserChangePasswordDto userChangePasswordDto) throws Exception {
         return this.userService.changePassword(authentication.getName(), userChangePasswordDto);
     }
 
-    @PutMapping(value = "change/email")
+    @PutMapping(value = "/user/change/email")
     public boolean changeEmail(@Autowired Authentication authentication, @RequestParam String email) throws Exception {
         return this.userService.changeEmail(authentication.getName(), email);
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @DeleteMapping("user/{id}")
+    @DeleteMapping("/user/{id}")
     public void removeUser(@PathVariable("id") Long id) throws UserNotFoundException {
         this.userService.deleteUserById(id);
     }
 
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'MODERATOR')")
-    @GetMapping("users")
+    @PreAuthorize("hasAuthority('MODERATOR')")
+    @GetMapping("/users")
     public List<UserDto> getUsers() {
         return this.userMapper.mapListUserToListUserDto(this.userService.loadUsers());
     }

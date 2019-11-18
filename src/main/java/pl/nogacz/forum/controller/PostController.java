@@ -26,7 +26,7 @@ import java.util.List;
 public class PostController {
     private PostService postService;
 
-    @PreAuthorize("hasAnyAuthority('USER')")
+    @PreAuthorize("hasAuthority('USER')")
     @PostMapping("topic")
     public AddTopicResponseDto addTopic(@Autowired Authentication authentication, @RequestBody AddTopicRequestDto postAddTopicDto) throws TagNotFoundException {
        return this.postService.addTopic(authentication.getName(), postAddTopicDto);
@@ -53,11 +53,15 @@ public class PostController {
         return this.postService.getTopic(topicId);
     }
 
-    @PreAuthorize("hasAnyAuthority('USER')")
+    @PreAuthorize("hasAuthority('USER')")
     @PostMapping("comment")
     public AddCommentResponseDto addComment(@Autowired Authentication authentication, @RequestBody AddCommentRequestDto addCommentDto) throws TopicNotFoundException {
          return this.postService.addComment(authentication.getName(), addCommentDto);
     }
 
+    @PreAuthorize("hasAuthority('MODERATOR')")
+    @PutMapping("comment")
+    public void editComment(@Autowired Authentication authentication, @RequestBody EditCommentRequestDto editCommentRequestDto) {
 
+    }
 }

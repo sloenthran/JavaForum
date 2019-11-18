@@ -57,6 +57,7 @@ public class UserService implements UserDetailsService {
                 true,
                 true,
                 authorities,
+                new ArrayList<>(),
                 new ArrayList<>()
         );
 

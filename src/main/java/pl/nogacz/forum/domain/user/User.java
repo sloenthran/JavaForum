@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
+import pl.nogacz.forum.domain.Log;
 import pl.nogacz.forum.domain.post.Comment;
 
 import javax.persistence.*;
@@ -68,4 +69,12 @@ public class User implements UserDetails {
             fetch = FetchType.LAZY
     )
     private List<Comment> comments = new ArrayList<>();
+
+    @OneToMany(
+            targetEntity = Log.class,
+            cascade = CascadeType.PERSIST,
+            mappedBy = "user",
+            fetch = FetchType.LAZY
+    )
+    private List<Log> logs = new ArrayList<>();
 }

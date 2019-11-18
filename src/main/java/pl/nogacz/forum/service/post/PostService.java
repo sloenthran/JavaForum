@@ -42,13 +42,11 @@ public class PostService {
 
         Topic saveTopic = this.topicRepository.save(topic);
 
-        Comment comment = new Comment(
-                null,
-                postAddTopicDto.getText(),
-                user,
-                LocalDateTime.now(),
-                saveTopic
-        );
+        Comment comment = Comment.builder()
+                .text(postAddTopicDto.getText())
+                .topic(topic)
+                .user(user)
+                .build();
 
         this.commentRepository.save(comment);
 
@@ -89,13 +87,11 @@ public class PostService {
         User user = this.userService.loadUserByUsername(username);
         Topic topic = this.topicRepository.findById(addCommentDto.getTopicId()).orElseThrow(TopicNotFoundException::new);
 
-        Comment comment = new Comment(
-                null,
-                addCommentDto.getText(),
-                user,
-                LocalDateTime.now(),
-                topic
-        );
+        Comment comment = Comment.builder()
+                .text(addCommentDto.getText())
+                .topic(topic)
+                .user(user)
+                .build();
 
         Comment saveComment = this.commentRepository.save(comment);
 
