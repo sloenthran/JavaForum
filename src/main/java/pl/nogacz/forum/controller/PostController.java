@@ -58,4 +58,6 @@ public class PostController {
     public AddCommentResponseDto addComment(@Autowired Authentication authentication, @RequestBody AddCommentRequestDto addCommentDto) throws TopicNotFoundException {
          return this.postService.addComment(authentication.getName(), addCommentDto);
     }
+
+
 }

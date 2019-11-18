@@ -48,7 +48,7 @@ public class UserController {
         return this.userService.changeEmail(authentication.getName(), email);
     }
 
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("user/{id}")
     public void removeUser(@PathVariable("id") Long id) throws UserNotFoundException {
         this.userService.deleteUserById(id);
