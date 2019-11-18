@@ -32,6 +32,7 @@ public class Log {
 
     @NotNull
     @Column(name = "date")
+    @Builder.Default
     private LocalDateTime date = LocalDateTime.now();
 
     @NotNull
