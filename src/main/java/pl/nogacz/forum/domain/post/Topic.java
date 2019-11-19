@@ -41,10 +41,6 @@ public class Topic {
     @Column(name = "viewed_count")
     private Long viewedCount;
 
-    @NotNull
-    @Column(name = "likes_count")
-    private Long likesCount;
-
     @OneToMany(
             targetEntity = Like.class,
             cascade = CascadeType.PERSIST,

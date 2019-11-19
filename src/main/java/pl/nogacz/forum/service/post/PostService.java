@@ -3,6 +3,7 @@ package pl.nogacz.forum.service.post;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.nogacz.forum.domain.post.Comment;
+import pl.nogacz.forum.domain.post.Like;
 import pl.nogacz.forum.domain.post.Tag;
 import pl.nogacz.forum.domain.post.Topic;
 import pl.nogacz.forum.domain.user.User;
@@ -12,6 +13,7 @@ import pl.nogacz.forum.exception.post.TagNotFoundException;
 import pl.nogacz.forum.exception.post.TopicNotFoundException;
 import pl.nogacz.forum.mapper.PostMapper;
 import pl.nogacz.forum.repository.post.CommentRepository;
+import pl.nogacz.forum.repository.post.LikeRepository;
 import pl.nogacz.forum.repository.post.TopicRepository;
 import pl.nogacz.forum.service.LogService;
 import pl.nogacz.forum.service.user.UserService;
@@ -26,6 +28,7 @@ import java.util.List;
 public class PostService {
     private TopicRepository topicRepository;
     private CommentRepository commentRepository;
+    private LikeRepository likeRepository;
     private UserService userService;
     private PostMapper postMapper;
     private LogService logService;
@@ -38,7 +41,6 @@ public class PostService {
                 this.getTagFromString(postAddTopicDto.getTag()),
                 postAddTopicDto.getTitle(),
                 new ArrayList<>(),
-                0L,
                 0L,
                 new ArrayList<>()
         );
@@ -104,14 +106,38 @@ public class PostService {
         );
     }
 
-    public void deleteComment(final String username, final Long id) throws CommentNotFoundException {
+    public void deleteComment(final String username, final Long commentId) throws CommentNotFoundException {
         User user = this.userService.loadUserByUsername(username);
 
-        Comment comment = this.commentRepository.findById(id).orElseThrow(CommentNotFoundException::new);
+        Comment comment = this.commentRepository.findById(commentId).orElseThrow(CommentNotFoundException::new);
 
         comment.getTopic().getComments().remove(comment);
 
         this.commentRepository.delete(comment);
         this.logService.addLog(user, "Deleted comment");
+    }
+
+    public String changeLike(final String username, final Long topicId) throws TopicNotFoundException {
+        User user = this.userService.loadUserByUsername(username);
+
+        Topic topic = this.topicRepository.findById(topicId).orElseThrow(TopicNotFoundException::new);
+
+        Like like = this.likeRepository.findByUserAndTopic(user, topic).orElse(null);
+
+        String message = "";
+
+        if(like == null) {
+            like = new Like(null, user, topic);
+
+            this.likeRepository.save(like);
+
+            message = "Like added";
+        } else {
+            this.likeRepository.delete(like);
+
+            message = "Like deleted";
+        }
+
+        return message;
     }
 }

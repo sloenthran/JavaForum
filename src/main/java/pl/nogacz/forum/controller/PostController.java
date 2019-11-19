@@ -7,6 +7,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import pl.nogacz.forum.domain.post.Tag;
+import pl.nogacz.forum.domain.post.Topic;
 import pl.nogacz.forum.dto.post.*;
 import pl.nogacz.forum.exception.post.CommentNotFoundException;
 import pl.nogacz.forum.exception.post.TagNotFoundException;
@@ -72,5 +73,13 @@ public class PostController {
         this.postService.deleteComment(authentication.getName(), id);
 
         return new DeleteCommentResponseDto();
+    }
+
+    @PreAuthorize("hasAuthority('USER')")
+    @PutMapping("/topic/like/{id}")
+    public ChangeLikeResponseDto changeLike(@Autowired Authentication authentication, @PathVariable("id") Long id) throws TopicNotFoundException {
+        String message = this.postService.changeLike(authentication.getName(), id);
+
+        return new ChangeLikeResponseDto(message, id);
     }
 }
