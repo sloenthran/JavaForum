@@ -44,4 +44,12 @@ public class Topic {
     @NotNull
     @Column(name = "likes_count")
     private Long likesCount;
+
+    @OneToMany(
+            targetEntity = Like.class,
+            cascade = CascadeType.PERSIST,
+            mappedBy = "topic",
+            fetch = FetchType.LAZY
+    )
+    private List<Like> likes = new ArrayList<>();
 }

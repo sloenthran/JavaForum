@@ -1,11 +1,13 @@
 package pl.nogacz.forum.domain.user;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import pl.nogacz.forum.domain.Log;
 import pl.nogacz.forum.domain.post.Comment;
+import pl.nogacz.forum.domain.post.Like;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -16,6 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @Entity(name = "users")
+@Builder
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,19 +39,23 @@ public class User implements UserDetails {
 
     @NotNull
     @Column(name = "account_non_locked")
-    private boolean accountNonLocked;
+    @Builder.Default
+    private boolean accountNonLocked = true;
 
     @NotNull
     @Column(name = "account_non_expired")
-    private boolean accountNonExpired;
+    @Builder.Default
+    private boolean accountNonExpired = true;
 
     @NotNull
     @Column(name = "credentials_non_expired")
-    private boolean credentialsNonExpired;
+    @Builder.Default
+    private boolean credentialsNonExpired = true;
 
     @NotNull
     @Column(name = "account_enabled")
-    private boolean enabled;
+    @Builder.Default
+    private boolean enabled = true;
 
     @ManyToMany(
             cascade = CascadeType.ALL,
@@ -59,6 +66,7 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
+    @Builder.Default
     private List<UserRole> authorities = new ArrayList<>();
 
 
@@ -68,6 +76,7 @@ public class User implements UserDetails {
             mappedBy = "user",
             fetch = FetchType.LAZY
     )
+    @Builder.Default
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(
@@ -76,5 +85,15 @@ public class User implements UserDetails {
             mappedBy = "user",
             fetch = FetchType.LAZY
     )
+    @Builder.Default
     private List<Log> logs = new ArrayList<>();
+
+    @OneToMany(
+            targetEntity = Like.class,
+            cascade = CascadeType.PERSIST,
+            mappedBy = "user",
+            fetch = FetchType.LAZY
+    )
+    @Builder.Default
+    private List<Like> likes = new ArrayList<>();
 }

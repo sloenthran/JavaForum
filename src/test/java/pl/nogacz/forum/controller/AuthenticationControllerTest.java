@@ -50,19 +50,13 @@ public class AuthenticationControllerTest {
         List<UserRole> authorities = new ArrayList<>();
         authorities.add(userRole);
 
-        User user = new User(
-                1L,
-                "sloenthran",
-                this.passwordEncoder.encode("password"),
-                "sloenthran@gmail.com",
-                true,
-                true,
-                true,
-                true,
-                authorities,
-                new ArrayList<>(),
-                new ArrayList<>()
-        );
+        User user = User.builder()
+                .id(1L)
+                .authorities(authorities)
+                .username("sloenthran")
+                .password(this.passwordEncoder.encode("password"))
+                .email("sloenthran@gmail.com")
+                .build();
 
         this.userService.saveUser(user);
     }

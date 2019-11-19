@@ -1,21 +1,18 @@
-package pl.nogacz.forum.domain;
+package pl.nogacz.forum.domain.post;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import pl.nogacz.forum.domain.user.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@Entity(name = "logs")
-@Builder
-public class Log {
+@Entity(name = "likes")
+public class Like {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -30,11 +27,10 @@ public class Log {
     private User user;
 
     @NotNull
-    @Column(name = "date")
-    @Builder.Default
-    private LocalDateTime date = LocalDateTime.now();
-
-    @NotNull
-    @Column(name = "message")
-    private String message;
+    @ManyToOne(
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL
+    )
+    @JoinColumn(name = "topic_id")
+    private Topic topic;
 }

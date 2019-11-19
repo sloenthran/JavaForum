@@ -47,19 +47,12 @@ public class UserService implements UserDetailsService {
         List<UserRole> authorities = new ArrayList<>();
         authorities.add(userRole);
 
-        User user = new User(
-                null,
-                registerRequestDto.getUsername(),
-                passwordEncoder.encode(registerRequestDto.getPassword()),
-                registerRequestDto.getEmail(),
-                true,
-                true,
-                true,
-                true,
-                authorities,
-                new ArrayList<>(),
-                new ArrayList<>()
-        );
+        User user = User.builder()
+                .authorities(authorities)
+                .username(registerRequestDto.getUsername())
+                .password(this.passwordEncoder.encode(registerRequestDto.getPassword()))
+                .email(registerRequestDto.getEmail())
+                .build();
 
         return this.saveUser(user);
     }

@@ -39,7 +39,8 @@ public class PostService {
                 postAddTopicDto.getTitle(),
                 new ArrayList<>(),
                 0L,
-                0L
+                0L,
+                new ArrayList<>()
         );
 
         Topic saveTopic = this.topicRepository.save(topic);
