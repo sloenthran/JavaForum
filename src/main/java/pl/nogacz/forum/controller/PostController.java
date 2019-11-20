@@ -6,6 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import pl.nogacz.forum.domain.post.Comment;
 import pl.nogacz.forum.domain.post.Tag;
 import pl.nogacz.forum.dto.post.*;
 import pl.nogacz.forum.exception.post.CommentNotFoundException;
@@ -58,6 +59,12 @@ public class PostController {
     @PostMapping("comment")
     public AddCommentResponseDto addComment(@Autowired Authentication authentication, @RequestBody AddCommentRequestDto addCommentDto) throws TopicNotFoundException {
          return this.postService.addComment(authentication.getName(), addCommentDto);
+    }
+
+    @PreAuthorize("hasAuthority('MODERATOR')")
+    @GetMapping("comment/{id}")
+    public CommentDto getComment(@PathVariable("id") Long id) throws CommentNotFoundException {
+        return this.postService.getComment(id);
     }
 
     @PreAuthorize("hasAuthority('MODERATOR')")

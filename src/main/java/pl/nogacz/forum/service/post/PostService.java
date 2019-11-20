@@ -155,4 +155,9 @@ public class PostService {
 
         return topTopicDto;
     }
+
+    public CommentDto getComment(final Long id) throws CommentNotFoundException {
+        Comment comment = this.commentRepository.findById(id).orElseThrow(CommentNotFoundException::new);
+        return this.postMapper.mapCommentToCommentDto(comment);
+    }
 }
