@@ -7,7 +7,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import pl.nogacz.forum.domain.post.Tag;
-import pl.nogacz.forum.domain.post.Topic;
 import pl.nogacz.forum.dto.post.*;
 import pl.nogacz.forum.exception.post.CommentNotFoundException;
 import pl.nogacz.forum.exception.post.TagNotFoundException;
@@ -84,7 +83,7 @@ public class PostController {
     }
 
     @GetMapping("/topics/likes")
-    public List<TopTopicLikesDto> getTopTopicLikes() throws TopicNotFoundException {
-       return this.postService.getTopTopicLikes();
+    public List<MostLikedTopicDto> getMostLikedTopics() throws TopicNotFoundException {
+       return this.postService.getMostLikedTopics();
     }
 }

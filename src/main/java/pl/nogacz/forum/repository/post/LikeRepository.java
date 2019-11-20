@@ -15,5 +15,5 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
     Optional<Like> findByUserAndTopic(User user, Topic topic);
 
     @Query(value = "SELECT COUNT(`id`), `topic_id` FROM `likes` GROUP BY `topic_id` ORDER BY COUNT(`topic_id`) DESC LIMIT 5", nativeQuery = true)
-    List<Object[]> getTopTopicLikes();
+    List<Object[]> getMostLikedTopics();
 }

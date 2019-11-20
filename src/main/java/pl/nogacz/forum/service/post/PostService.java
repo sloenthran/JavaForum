@@ -142,15 +142,15 @@ public class PostService {
         return message;
     }
 
-    public List<TopTopicLikesDto> getTopTopicLikes() throws TopicNotFoundException {
-        List<Object[]> topTopic = this.likeRepository.getTopTopicLikes();
-        List<TopTopicLikesDto> topTopicDto = new ArrayList<>();
+    public List<MostLikedTopicDto> getMostLikedTopics() throws TopicNotFoundException {
+        List<Object[]> topTopic = this.likeRepository.getMostLikedTopics();
+        List<MostLikedTopicDto> topTopicDto = new ArrayList<>();
 
         for(Object[] object : topTopic) {
             BigInteger topicId = (BigInteger) object[1];
 
             Topic topic = this.topicRepository.findById(topicId.longValue()).orElseThrow(TopicNotFoundException::new);
-            topTopicDto.add(this.postMapper.mapObjectToTopTopicLikesDto(object, topic.getTitle()));
+            topTopicDto.add(this.postMapper.mapObjectToMostLikedTopicDto(object, topic.getTitle()));
         }
 
         return topTopicDto;

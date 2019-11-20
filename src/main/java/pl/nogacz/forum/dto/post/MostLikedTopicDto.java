@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class TopTopicLikesDto {
+public class MostLikedTopicDto {
     private String topicName;
     private Long topicId;
     private Long topicLikes;

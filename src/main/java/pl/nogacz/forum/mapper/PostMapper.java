@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 import pl.nogacz.forum.domain.post.Comment;
 import pl.nogacz.forum.domain.post.Topic;
 import pl.nogacz.forum.dto.post.CommentDto;
-import pl.nogacz.forum.dto.post.TopTopicLikesDto;
+import pl.nogacz.forum.dto.post.MostLikedTopicDto;
 import pl.nogacz.forum.dto.post.TopicDto;
 
 import java.math.BigInteger;
@@ -47,11 +47,11 @@ public class PostMapper {
                 .collect(Collectors.toList());
     }
 
-    public TopTopicLikesDto mapObjectToTopTopicLikesDto(final Object[] object, final String topicName) {
+    public MostLikedTopicDto mapObjectToMostLikedTopicDto(final Object[] object, final String topicName) {
         BigInteger count = (BigInteger) object[0];
         BigInteger topicId = (BigInteger) object[1];
 
-        return new TopTopicLikesDto(
+        return new MostLikedTopicDto(
                 topicName,
                 topicId.longValue(),
                 count.longValue()
