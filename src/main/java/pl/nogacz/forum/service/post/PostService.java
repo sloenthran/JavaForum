@@ -160,4 +160,16 @@ public class PostService {
         Comment comment = this.commentRepository.findById(id).orElseThrow(CommentNotFoundException::new);
         return this.postMapper.mapCommentToCommentDto(comment);
     }
+
+    public EditCommentResponseDto editComment(final String username, final EditCommentRequestDto requestDto) throws CommentNotFoundException {
+        Comment comment = this.commentRepository.findById(requestDto.getCommentId()).orElseThrow(CommentNotFoundException::new);
+        comment.setText(requestDto.getText());
+
+        this.commentRepository.save(comment);
+
+        User user = this.userService.loadUserByUsername(username);
+        this.logService.addLog(user, "Edit comment #" + comment.getId());
+
+        return new EditCommentResponseDto(comment.getId());
+    }
 }

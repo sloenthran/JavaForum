@@ -69,8 +69,8 @@ public class PostController {
 
     @PreAuthorize("hasAuthority('MODERATOR')")
     @PutMapping("comment")
-    public void editComment(@Autowired Authentication authentication, @RequestBody EditCommentRequestDto editCommentRequestDto) {
-        //TODO
+    public EditCommentResponseDto editComment(@Autowired Authentication authentication, @RequestBody EditCommentRequestDto editCommentRequestDto) throws CommentNotFoundException {
+        return this.postService.editComment(authentication.getName(), editCommentRequestDto);
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
