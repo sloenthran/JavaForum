@@ -19,6 +19,7 @@ import pl.nogacz.forum.service.LogService;
 import pl.nogacz.forum.service.user.UserService;
 
 import javax.transaction.Transactional;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,8 +39,8 @@ public class PostService {
 
         Topic topic = new Topic(
                 null,
-                this.getTagFromString(postAddTopicDto.getTag()),
                 postAddTopicDto.getTitle(),
+                this.getTagFromString(postAddTopicDto.getTag()),
                 new ArrayList<>(),
                 0L,
                 new ArrayList<>()
@@ -139,5 +140,19 @@ public class PostService {
         }
 
         return message;
+    }
+
+    public List<TopTopicLikesDto> getTopTopicLikes() throws TopicNotFoundException {
+        List<Object[]> topTopic = this.likeRepository.getTopTopicLikes();
+        List<TopTopicLikesDto> topTopicDto = new ArrayList<>();
+
+        for(Object[] object : topTopic) {
+            BigInteger topicId = (BigInteger) object[1];
+
+            Topic topic = this.topicRepository.findById(topicId.longValue()).orElseThrow(TopicNotFoundException::new);
+            topTopicDto.add(this.postMapper.mapObjectToTopTopicLikesDto(object, topic.getTitle()));
+        }
+
+        return topTopicDto;
     }
 }

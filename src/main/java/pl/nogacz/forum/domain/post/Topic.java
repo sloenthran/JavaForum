@@ -20,13 +20,13 @@ public class Topic {
     private Long id;
 
     @NotNull
+    @Column(name = "title")
+    private String title;
+
+    @NotNull
     @Column(name = "tag")
     @Enumerated(EnumType.STRING)
     private Tag tag;
-
-    @NotNull
-    @Column(name = "title")
-    private String title;
 
     @NotNull
     @OneToMany(

@@ -82,4 +82,9 @@ public class PostController {
 
         return new ChangeLikeResponseDto(message, id);
     }
+
+    @GetMapping("/topics/likes")
+    public List<TopTopicLikesDto> getTopTopicLikes() throws TopicNotFoundException {
+       return this.postService.getTopTopicLikes();
+    }
 }
