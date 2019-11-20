@@ -170,6 +170,6 @@ public class PostService {
         User user = this.userService.loadUserByUsername(username);
         this.logService.addLog(user, "Edit comment #" + comment.getId());
 
-        return new EditCommentResponseDto(comment.getId());
+        return new EditCommentResponseDto(comment.getTopic().getId());
     }
 }
