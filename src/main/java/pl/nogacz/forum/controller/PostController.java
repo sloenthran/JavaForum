@@ -6,12 +6,12 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import pl.nogacz.forum.domain.post.Comment;
 import pl.nogacz.forum.domain.post.Tag;
 import pl.nogacz.forum.dto.post.*;
 import pl.nogacz.forum.exception.post.CommentNotFoundException;
 import pl.nogacz.forum.exception.post.TagNotFoundException;
 import pl.nogacz.forum.exception.post.TopicNotFoundException;
+import pl.nogacz.forum.service.CleanService;
 import pl.nogacz.forum.service.post.PostService;
 
 import java.util.ArrayList;
@@ -27,10 +27,12 @@ import java.util.List;
 )
 public class PostController {
     private PostService postService;
+    private CleanService cleanService;
 
     @PreAuthorize("hasAuthority('USER')")
     @PostMapping("topic")
     public AddTopicResponseDto addTopic(@Autowired Authentication authentication, @RequestBody AddTopicRequestDto postAddTopicDto) throws TagNotFoundException {
+        postAddTopicDto = this.cleanService.cleanAddTopicRequestDto(postAddTopicDto);
        return this.postService.addTopic(authentication.getName(), postAddTopicDto);
     }
 
@@ -58,6 +60,7 @@ public class PostController {
     @PreAuthorize("hasAuthority('USER')")
     @PostMapping("comment")
     public AddCommentResponseDto addComment(@Autowired Authentication authentication, @RequestBody AddCommentRequestDto addCommentDto) throws TopicNotFoundException {
+        addCommentDto = this.cleanService.cleanAddCommentRequestDto(addCommentDto);
          return this.postService.addComment(authentication.getName(), addCommentDto);
     }
 
@@ -70,6 +73,7 @@ public class PostController {
     @PreAuthorize("hasAuthority('MODERATOR')")
     @PutMapping("comment")
     public EditCommentResponseDto editComment(@Autowired Authentication authentication, @RequestBody EditCommentRequestDto editCommentRequestDto) throws CommentNotFoundException {
+        editCommentRequestDto = this.cleanService.cleanEditCommentRequestDto(editCommentRequestDto);
         return this.postService.editComment(authentication.getName(), editCommentRequestDto);
     }
 

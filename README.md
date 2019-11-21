@@ -10,6 +10,12 @@ Gradle, Spring Boot, Hibernate, Spring Security (JWT), Junit4, Java 8
 
 Singleton, Builder
 
+## External API
+
+https://rapidapi.com/neutrinoapi/api/html-clean - for prevent XSS attack
+
+https://rapidapi.com/neutrinoapi/api/email-validate - for prevent register for not existing or temp email
+
 ## Live demo
 
 https://sloenthran.github.io/JavaForum

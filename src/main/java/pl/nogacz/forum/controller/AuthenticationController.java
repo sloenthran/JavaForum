@@ -16,6 +16,7 @@ import pl.nogacz.forum.dto.user.UserDto;
 import pl.nogacz.forum.exception.authentication.InvalidCredentialsException;
 import pl.nogacz.forum.config.authentication.util.TokenUtil;
 import pl.nogacz.forum.mapper.UserMapper;
+import pl.nogacz.forum.service.CleanService;
 import pl.nogacz.forum.service.user.UserService;
 
 @RestController
@@ -31,6 +32,7 @@ public class AuthenticationController {
     private TokenUtil tokenUtil;
     private UserService userService;
     private UserMapper userMapper;
+    private CleanService cleanService;
 
     @PostMapping(value = "login")
     public AuthenticationResponseDto createAuthenticationToken(@RequestBody AuthenticationRequestDto authenticationRequestDto) throws Exception {
@@ -44,11 +46,13 @@ public class AuthenticationController {
 
     @PutMapping(value = "register")
     public UserDto register(@RequestBody RegisterRequestDto registerRequestDto) throws Exception {
+        registerRequestDto = this.cleanService.cleanRegisterRequestDto(registerRequestDto);
         User user = this.userService.registerUser(registerRequestDto);
         return this.userMapper.mapUserToUserDto(user);
     }
 
     private void authenticate(AuthenticationRequestDto authenticationRequestDto) throws Exception {
+        authenticationRequestDto = this.cleanService.cleanAuthenticationRequestDto(authenticationRequestDto);
         try {
             this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequestDto.getUsername(), authenticationRequestDto.getPassword()));
         } catch (BadCredentialsException | InternalAuthenticationServiceException e) {
