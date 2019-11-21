@@ -20,6 +20,7 @@ import pl.nogacz.forum.dto.authentication.AuthenticationRequestDto;
 import pl.nogacz.forum.dto.authentication.AuthenticationResponseDto;
 import pl.nogacz.forum.dto.post.AddCommentRequestDto;
 import pl.nogacz.forum.dto.post.AddTopicRequestDto;
+import pl.nogacz.forum.dto.post.EditCommentRequestDto;
 import pl.nogacz.forum.service.post.PostService;
 import pl.nogacz.forum.service.user.UserRoleService;
 import pl.nogacz.forum.service.user.UserService;
@@ -95,6 +96,15 @@ public class PostControllerTest {
         );
 
         this.postService.addTopic("sloenthran", addTopicRequestDto);
+    }
+
+    private void addMemberAuthoritiesFunction(String username, Role role) throws Exception {
+        User user = this.userService.loadUserByUsername(username);
+        UserRole userRole = this.userRoleService.loadUserRoleByRole(role);
+
+        user.getAuthorities().add(userRole);
+
+        this.userService.saveUser(user);
     }
 
     @Test
@@ -297,11 +307,140 @@ public class PostControllerTest {
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void getComment() throws Exception {
+        //Given
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(loginToken);
+
+        HttpEntity httpEntity = new HttpEntity(null, headers);
+
+        this.addTopicFunction();
+        this.addMemberAuthoritiesFunction("sloenthran", Role.MODERATOR);
+
+        //When
+        ResponseEntity<String> responseEntity = this.restTemplate.exchange("http://localhost:" + this.serverPort + "/post/comment/1", HttpMethod.GET, httpEntity, String.class);
+
+        //Then
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertTrue(responseEntity.hasBody());
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void getCommentWithUserNotIsModerator() throws Exception {
+        //Given
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(loginToken);
+
+        HttpEntity httpEntity = new HttpEntity(null, headers);
+
+        this.addTopicFunction();
+
+        //When
+        ResponseEntity<String> responseEntity = this.restTemplate.exchange("http://localhost:" + this.serverPort + "/post/comment/1", HttpMethod.GET, httpEntity, String.class);
+
+        //Then
+        assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
+        assertTrue(responseEntity.hasBody());
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void getCommentNotExisted() throws Exception {
+        //Given
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(loginToken);
+
+        HttpEntity httpEntity = new HttpEntity(null, headers);
+
+        this.addTopicFunction();
+        this.addMemberAuthoritiesFunction("sloenthran", Role.MODERATOR);
+
+        //When
+        ResponseEntity<String> responseEntity = this.restTemplate.exchange("http://localhost:" + this.serverPort + "/post/comment/6", HttpMethod.GET, httpEntity, String.class);
+
+        //Then
+        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+        assertTrue(responseEntity.hasBody());
     }
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void editComment() throws Exception {
+        //Given
+        EditCommentRequestDto editCommentRequestDto = new EditCommentRequestDto(
+                1L,
+                "text abcd"
+        );
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(loginToken);
+
+        HttpEntity httpEntity = new HttpEntity(editCommentRequestDto, headers);
+
+        this.addTopicFunction();
+        this.addMemberAuthoritiesFunction("sloenthran", Role.MODERATOR);
+
+        //When
+        ResponseEntity<String> responseEntity = this.restTemplate.exchange("http://localhost:" + this.serverPort + "/post/comment", HttpMethod.PUT, httpEntity, String.class);
+
+        //Then
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertTrue(responseEntity.hasBody());
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void editCommentWithUserIsNotModerator() throws Exception {
+        //Given
+        EditCommentRequestDto editCommentRequestDto = new EditCommentRequestDto(
+                1L,
+                "text abcd"
+        );
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(loginToken);
+
+        HttpEntity httpEntity = new HttpEntity(editCommentRequestDto, headers);
+
+        this.addTopicFunction();
+
+        //When
+        ResponseEntity<String> responseEntity = this.restTemplate.exchange("http://localhost:" + this.serverPort + "/post/comment", HttpMethod.PUT, httpEntity, String.class);
+
+        //Then
+        assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
+        assertTrue(responseEntity.hasBody());
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void editCommentNotExisted() throws Exception {
+        //Given
+        EditCommentRequestDto editCommentRequestDto = new EditCommentRequestDto(
+                6L,
+                "text abcd"
+        );
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(loginToken);
+
+        HttpEntity httpEntity = new HttpEntity(editCommentRequestDto, headers);
+
+        this.addTopicFunction();
+        this.addMemberAuthoritiesFunction("sloenthran", Role.MODERATOR);
+
+        //When
+        ResponseEntity<String> responseEntity = this.restTemplate.exchange("http://localhost:" + this.serverPort + "/post/comment", HttpMethod.PUT, httpEntity, String.class);
+
+        //Then
+        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+        assertTrue(responseEntity.hasBody());
     }
 
     @Test
