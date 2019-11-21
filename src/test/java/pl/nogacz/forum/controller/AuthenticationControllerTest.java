@@ -44,11 +44,8 @@ public class AuthenticationControllerTest {
 
     @Before
     public void prepareDatabase() throws Exception {
-        UserRole userRole = new UserRole(1L, Role.USER, new ArrayList<>());
-        this.userRoleService.saveUserRole(userRole);
-
         List<UserRole> authorities = new ArrayList<>();
-        authorities.add(userRole);
+        authorities.add(this.userRoleService.loadUserRoleByRole(Role.USER));
 
         User user = User.builder()
                 .id(1L)
