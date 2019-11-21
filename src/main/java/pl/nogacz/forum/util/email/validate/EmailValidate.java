@@ -1,9 +1,11 @@
 package pl.nogacz.forum.util.email.validate;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.Unirest;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.apache.commons.validator.routines.EmailValidator;
-import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import pl.nogacz.forum.config.EmailValidateConfig;
@@ -19,29 +21,32 @@ public class EmailValidate {
     private RestTemplate restTemplate;
 
     public boolean validEmail(String email) throws Exception  {
-        HttpHeaders headers = new HttpHeaders();
+        EmailValidateResponse responseBody = null;
 
-        headers.add("x-rapidapi-host", this.config.getHost());
-        headers.add("x-rapidapi-key", this.config.getKey());
+        try {
+            HttpResponse<String> response = Unirest.post(config.getUrl())
+                    .header("x-rapidapi-host", config.getHost())
+                    .header("x-rapidapi-key", config.getKey())
+                    .header("content-type", "application/x-www-form-urlencoded")
+                    .body("email="+ email).asString();
 
-        EmailValidateRequest request = new EmailValidateRequest(email);
+            if(response.getStatus() == 200) {
+                responseBody = new ObjectMapper().readValue(response.getBody(), EmailValidateResponse.class);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getLocalizedMessage());
+        }
 
-        HttpEntity httpEntity = new HttpEntity(request, headers);
-
-        ResponseEntity<EmailValidateResponse> responseEntity = this.restTemplate.exchange(this.config.getUrl(), HttpMethod.POST, httpEntity, EmailValidateResponse.class);
-
-        if(responseEntity.hasBody() && responseEntity.getStatusCode().is2xxSuccessful()) {
-            EmailValidateResponse response = responseEntity.getBody();
-
-            if(response.isDisposable()) {
+        if(responseBody != null) {
+            if(responseBody.isDisposable()) {
                 throw new EmailDisposableException();
             }
 
-            if(response.isDomainError()) {
+            if(responseBody.isDomainError()) {
                 throw new EmailDomainNotFound();
             }
 
-            if(!response.isValid()) {
+            if(!responseBody.isValid()) {
                 throw new BadEmailException();
             }
         } else {
