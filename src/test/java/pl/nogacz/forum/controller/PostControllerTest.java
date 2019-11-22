@@ -446,6 +446,63 @@ public class PostControllerTest {
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void deleteComment() throws Exception {
+        //Given
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(loginToken);
+
+        HttpEntity httpEntity = new HttpEntity(null, headers);
+
+        this.addTopicFunction();
+        this.addMemberAuthoritiesFunction("sloenthran", Role.ADMIN);
+
+        //When
+        ResponseEntity<String> responseEntity = this.restTemplate.exchange("http://localhost:" + this.serverPort + "/post/comment/1", HttpMethod.DELETE, httpEntity, String.class);
+
+        //Then
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertTrue(responseEntity.hasBody());
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void deleteCommentNotExisted() throws Exception {
+        //Given
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(loginToken);
+
+        HttpEntity httpEntity = new HttpEntity(null, headers);
+
+        this.addTopicFunction();
+        this.addMemberAuthoritiesFunction("sloenthran", Role.ADMIN);
+
+        //When
+        ResponseEntity<String> responseEntity = this.restTemplate.exchange("http://localhost:" + this.serverPort + "/post/comment/6", HttpMethod.DELETE, httpEntity, String.class);
+
+        //Then
+        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+        assertTrue(responseEntity.hasBody());
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void deleteCommentWithUserIsNotAdmin() throws Exception {
+        //Given
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(loginToken);
+
+        HttpEntity httpEntity = new HttpEntity(null, headers);
+
+        this.addTopicFunction();
+
+        //When
+        ResponseEntity<String> responseEntity = this.restTemplate.exchange("http://localhost:" + this.serverPort + "/post/comment/1", HttpMethod.DELETE, httpEntity, String.class);
+
+        //Then
+        assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
+        assertTrue(responseEntity.hasBody());
     }
 
     @Test
