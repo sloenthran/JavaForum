@@ -63,7 +63,6 @@ public class EmailValidate {
             }
 
             List<String> disposableEmails = Files.readAllLines(Paths.get("DisposableEmail.txt"));
-            System.out.println(disposableEmails.size());
 
             if(disposableEmails.contains(emailSplit[1])) {
                 throw new EmailDisposableException();
