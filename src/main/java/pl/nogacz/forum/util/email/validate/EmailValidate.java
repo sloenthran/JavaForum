@@ -13,6 +13,9 @@ import pl.nogacz.forum.exception.validation.BadEmailException;
 import pl.nogacz.forum.exception.validation.EmailDisposableException;
 import pl.nogacz.forum.exception.validation.EmailDomainNotFound;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 @Component
 @Data
 @AllArgsConstructor
@@ -23,21 +26,16 @@ public class EmailValidate {
     public boolean validEmail(String email) throws Exception  {
         EmailValidateResponse responseBody = null;
 
-        try {
-            HttpResponse<String> response = Unirest.post(config.getUrl())
-                    .header("x-rapidapi-host", config.getHost())
-                    .header("x-rapidapi-key", config.getKey())
-                    .header("content-type", "application/x-www-form-urlencoded")
-                    .body("email="+ email).asString();
+        HttpResponse<String> response = Unirest.post(config.getUrl())
+                .header("x-rapidapi-host", config.getHost())
+                .header("x-rapidapi-key", config.getKey())
+                .header("content-type", "application/x-www-form-urlencoded")
+                .body("email="+ email)
+                .asString();
 
-            if(response.getStatus() == 200) {
+        if(response.getStatus() == 200) {
                 responseBody = new ObjectMapper().readValue(response.getBody(), EmailValidateResponse.class);
-            }
-        } catch (Exception e) {
-            System.out.println(e.getLocalizedMessage());
-        }
 
-        if(responseBody != null) {
             if(responseBody.isDisposable()) {
                 throw new EmailDisposableException();
             }
@@ -53,7 +51,16 @@ public class EmailValidate {
             if(!EmailValidator.getInstance().isValid(email)) {
                 throw new BadEmailException();
             }
+
+            String[] emailSplit = email.split("@");
+            try {
+                InetAddress.getByName(emailSplit[1]);
+            } catch (UnknownHostException e) {
+                throw new EmailDomainNotFound();
+            }
         }
+
+
 
         return true;
     }
