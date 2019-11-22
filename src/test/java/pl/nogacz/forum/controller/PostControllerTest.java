@@ -508,10 +508,12 @@ public class PostControllerTest {
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void changeLike() throws Exception {
+        //TODO
     }
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void getMostLikedTopics() throws Exception {
+        //TODO
     }
 }
