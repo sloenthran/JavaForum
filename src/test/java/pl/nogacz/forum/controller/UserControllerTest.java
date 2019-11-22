@@ -11,6 +11,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import pl.nogacz.forum.domain.user.Role;
 import pl.nogacz.forum.domain.user.User;
@@ -88,6 +89,7 @@ public class UserControllerTest {
     }
 
     @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void getInfoOfActualUser() throws Exception {
         //Given
         List<UserRole> authorities = new ArrayList<>();
@@ -121,6 +123,7 @@ public class UserControllerTest {
     }
 
     @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void changePassword() throws Exception {
         //Given
         UserChangePasswordDto userChangePasswordDto = new UserChangePasswordDto(
@@ -143,6 +146,7 @@ public class UserControllerTest {
     }
 
     @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void changePasswordWithTooShortPassword() throws Exception {
         //Given
         UserChangePasswordDto userChangePasswordDto = new UserChangePasswordDto(
@@ -165,6 +169,7 @@ public class UserControllerTest {
     }
 
     @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void changePasswordWithBadOldPassword() throws Exception {
         //Given
         UserChangePasswordDto userChangePasswordDto = new UserChangePasswordDto(
@@ -187,18 +192,127 @@ public class UserControllerTest {
     }
 
     @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void changeEmail() throws Exception {
+        //Given
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(loginToken);
+
+        HttpEntity httpEntity = new HttpEntity(null, headers);
+
+        //When
+        ResponseEntity<String> responseEntity = this.restTemplate.exchange("http://localhost:" + this.serverPort + "/user/change/email?email=sloenthran123@gmail.com", HttpMethod.PUT, httpEntity, String.class);
+
+        //Then
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertTrue(responseEntity.hasBody());
     }
 
     @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void changeEmailWithNotLoggedUser() throws Exception {
+        //Given
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity httpEntity = new HttpEntity(null, headers);
+
+        //When
+        ResponseEntity<String> responseEntity = this.restTemplate.exchange("http://localhost:" + this.serverPort + "/user/change/email?email=sloenthran123@gmail.com", HttpMethod.PUT, httpEntity, String.class);
+
+        //Then
+        assertEquals(HttpStatus.UNAUTHORIZED, responseEntity.getStatusCode());
+        assertTrue(responseEntity.hasBody());
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void changeEmailWithExistingEmail() throws Exception {
+        //Given
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(loginToken);
+
+        HttpEntity httpEntity = new HttpEntity(null, headers);
+
+        //When
+        ResponseEntity<String> responseEntity = this.restTemplate.exchange("http://localhost:" + this.serverPort + "/user/change/email?email=sloenthran@gmail.com", HttpMethod.PUT, httpEntity, String.class);
+
+        //Then
+        assertEquals(HttpStatus.CONFLICT, responseEntity.getStatusCode());
+        assertTrue(responseEntity.hasBody());
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void changeEmailWithBadEmail() throws Exception {
+        //Given
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(loginToken);
+
+        HttpEntity httpEntity = new HttpEntity(null, headers);
+
+        //When
+        ResponseEntity<String> responseEntity = this.restTemplate.exchange("http://localhost:" + this.serverPort + "/user/change/email?email=sloenthran123@gmail", HttpMethod.PUT, httpEntity, String.class);
+
+        //Then
+        assertEquals(HttpStatus.CONFLICT, responseEntity.getStatusCode());
+        assertTrue(responseEntity.hasBody());
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void changeEmailWithNotExistingDomain() throws Exception {
+        //Given
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(loginToken);
+
+        HttpEntity httpEntity = new HttpEntity(null, headers);
+
+        //When
+        ResponseEntity<String> responseEntity = this.restTemplate.exchange("http://localhost:" + this.serverPort + "/user/change/email?email=sloenthran123@gmailasdasdasdasdas123asd.com", HttpMethod.PUT, httpEntity, String.class);
+
+        //Then
+        assertEquals(HttpStatus.CONFLICT, responseEntity.getStatusCode());
+        assertTrue(responseEntity.hasBody());
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void changeEmailWithDisposableEmail() throws Exception {
+        //Given
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(loginToken);
+
+        HttpEntity httpEntity = new HttpEntity(null, headers);
+
+        //When
+        ResponseEntity<String> responseEntity = this.restTemplate.exchange("http://localhost:" + this.serverPort + "/user/change/email?email=sloenthran123@eveav.com", HttpMethod.PUT, httpEntity, String.class);
+
+        //Then
+        assertEquals(HttpStatus.CONFLICT, responseEntity.getStatusCode());
+        assertTrue(responseEntity.hasBody());
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void removeUser() throws Exception {
+        //TODO
     }
 
     @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void getUsers() throws Exception {
+        //TODO
     }
 
     @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void getUsersCount() throws Exception {
+        //TODO
     }
 }
