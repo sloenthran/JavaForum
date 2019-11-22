@@ -15,6 +15,9 @@ import pl.nogacz.forum.exception.validation.EmailDomainNotFound;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
 
 @Component
 @Data
@@ -58,9 +61,14 @@ public class EmailValidate {
             } catch (UnknownHostException e) {
                 throw new EmailDomainNotFound();
             }
+
+            List<String> disposableEmails = Files.readAllLines(Paths.get("DisposableEmail.txt"));
+            System.out.println(disposableEmails.size());
+
+            if(disposableEmails.contains(emailSplit[1])) {
+                throw new EmailDisposableException();
+            }
         }
-
-
 
         return true;
     }
