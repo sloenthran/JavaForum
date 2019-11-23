@@ -1,8 +1,6 @@
 language: java
 dist: trusty
 
-install: gradle wrapper
-
 jdk:
   - oraclejdk8
 
