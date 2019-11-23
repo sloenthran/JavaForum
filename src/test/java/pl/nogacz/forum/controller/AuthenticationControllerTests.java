@@ -26,7 +26,7 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class AuthenticationControllerTest {
+public class AuthenticationControllerTests {
     @LocalServerPort
     private int serverPort;
 

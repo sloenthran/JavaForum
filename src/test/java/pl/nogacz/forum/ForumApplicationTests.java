@@ -1,13 +1,12 @@
 package pl.nogacz.forum;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ForumApplicationTests {
-
+public class ForumApplicationTests {
     @Test
-    void contextLoads() {
+    public void applicationStarts() {
+        ForumApplication.main(new String[] {});
     }
-
 }
