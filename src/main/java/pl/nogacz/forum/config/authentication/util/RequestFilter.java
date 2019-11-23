@@ -20,7 +20,6 @@ import java.io.IOException;
 @Component
 @AllArgsConstructor
 public class RequestFilter extends OncePerRequestFilter {
-    private static final Logger LOGGER = LoggerFactory.getLogger(RequestFilter.class);
     private UserService userService;
     private TokenUtil tokenUtil;
 
@@ -33,11 +32,7 @@ public class RequestFilter extends OncePerRequestFilter {
 
         if(requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
             token = requestTokenHeader.substring(7);
-            try {
-                username = this.tokenUtil.getUsernameFromToken(token);
-            } catch (Exception e) {
-                this.LOGGER.error(e.getMessage());
-            }
+            username = this.tokenUtil.getUsernameFromToken(token);
         }
 
         if(username != null && SecurityContextHolder.getContext().getAuthentication() == null) {

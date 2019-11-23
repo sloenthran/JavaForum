@@ -3,7 +3,9 @@ package pl.nogacz.forum.domain.user;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
@@ -12,9 +14,14 @@ import java.util.List;
 @SpringBootTest
 @RunWith(SpringJUnit4ClassRunner.class)
 public class UserTests {
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Test
     public void equalsContract() {
         //Given
+        String password = passwordEncoder.encode("password");
+
         List<UserRole> authorities = new ArrayList<>();
         authorities.add(new UserRole(
                 1L,
@@ -26,7 +33,7 @@ public class UserTests {
                 .id(1L)
                 .authorities(authorities)
                 .username("sloenthran")
-                .password("password")
+                .password(password)
                 .email("sloenthran@gmail.com")
                 .build();
 
@@ -34,7 +41,7 @@ public class UserTests {
                 .id(1L)
                 .authorities(authorities)
                 .username("sloenthran")
-                .password("password")
+                .password(password)
                 .email("sloenthran@gmail.com")
                 .build();
 
@@ -45,6 +52,8 @@ public class UserTests {
     @Test
     public void equalsContractBad() {
         //Given
+        String password = passwordEncoder.encode("password");
+
         List<UserRole> authorities = new ArrayList<>();
         authorities.add(new UserRole(
                 1L,
@@ -56,7 +65,7 @@ public class UserTests {
                 .id(1L)
                 .authorities(authorities)
                 .username("sloenthran")
-                .password("password")
+                .password(password)
                 .email("sloenthran@gmail.com")
                 .build();
 
@@ -64,7 +73,7 @@ public class UserTests {
                 .id(1L)
                 .authorities(authorities)
                 .username("sloenthran123")
-                .password("password")
+                .password(password)
                 .email("sloenthran@gmail.com")
                 .build();
 
