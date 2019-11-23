@@ -34,8 +34,6 @@ public class EmailValidate {
                 .body("email="+ email)
                 .asString();
 
-        System.out.println(response.getStatus());
-
         if(response.getStatus() == 200) {
                 responseBody = new ObjectMapper().readValue(response.getBody(), EmailValidateResponse.class);
 
