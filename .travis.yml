@@ -1,13 +1,14 @@
 language: java
 dist: trusty
 
+install: gradle wrapper
+
 jdk:
   - oraclejdk8
 
 before_script:
   - chmod +x gradlew
 script:
-  - ./gradlew check
-  - ./gradlew codeCoverageReport
+  - ./gradlew build
 after_success:
   - bash <(curl -s https://codecov.io/bash)
