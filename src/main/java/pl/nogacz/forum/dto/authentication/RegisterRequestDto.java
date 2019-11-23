@@ -1,12 +1,16 @@
 package pl.nogacz.forum.dto.authentication;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @AllArgsConstructor
-@Data
 public class RegisterRequestDto {
     @NotNull
     private String username;
