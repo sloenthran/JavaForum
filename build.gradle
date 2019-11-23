@@ -36,7 +36,6 @@ dependencies {
     //Tests
     testImplementation('org.springframework.boot:spring-boot-starter-test')
     testImplementation('org.springframework.security:spring-security-test')
-    testImplementation('nl.jqno.equalsverifier:equalsverifier:3.1.10')
 }
 
 jacocoTestReport {
