@@ -36,6 +36,8 @@ public class EmailValidate {
                 .body("email="+ email)
                 .asString();
 
+        System.out.println(response.getStatus());
+
         if(response.getStatus() == 200) {
                 responseBody = new ObjectMapper().readValue(response.getBody(), EmailValidateResponse.class);
 
@@ -56,16 +58,17 @@ public class EmailValidate {
             }
 
             String[] emailSplit = email.split("@");
-            try {
-                InetAddress.getByName(emailSplit[1]);
-            } catch (UnknownHostException e) {
-                throw new EmailDomainNotFound();
-            }
 
             List<String> disposableEmails = Files.readAllLines(Paths.get("DisposableEmail.txt"));
 
             if(disposableEmails.contains(emailSplit[1])) {
                 throw new EmailDisposableException();
+            }
+
+            try {
+                InetAddress.getByName(emailSplit[1]);
+            } catch (UnknownHostException e) {
+                throw new EmailDomainNotFound();
             }
         }
 
