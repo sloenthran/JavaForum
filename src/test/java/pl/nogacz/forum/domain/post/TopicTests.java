@@ -16,7 +16,7 @@ import java.util.List;
 
 @SpringBootTest
 @RunWith(SpringJUnit4ClassRunner.class)
-public class LikeTest {
+public class TopicTests {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -47,20 +47,17 @@ public class LikeTest {
                 new ArrayList<>()
         );
 
-        Like like = new Like(
+        Topic topicTwo = new Topic(
                 1L,
-                user,
-                topic
-        );
-
-        Like likeTwo = new Like(
-                1L,
-                user,
-                topic
+                "title",
+                Tag.JAVA,
+                new ArrayList<>(),
+                0L,
+                new ArrayList<>()
         );
 
         //Then
-        Assert.assertEquals(like, likeTwo);
+        Assert.assertEquals(topic, topicTwo);
     }
 
     @Test
@@ -90,19 +87,16 @@ public class LikeTest {
                 new ArrayList<>()
         );
 
-        Like like = new Like(
+        Topic topicTwo = new Topic(
                 1L,
-                user,
-                topic
-        );
-
-        Like likeTwo = new Like(
-                2L,
-                user,
-                topic
+                "title",
+                Tag.WORK,
+                new ArrayList<>(),
+                0L,
+                new ArrayList<>()
         );
 
         //Then
-        Assert.assertNotEquals(like, likeTwo);
+        Assert.assertNotEquals(topic, topicTwo);
     }
 }

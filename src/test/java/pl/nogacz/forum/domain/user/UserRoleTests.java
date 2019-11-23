@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 @SpringBootTest
 @RunWith(SpringJUnit4ClassRunner.class)
-public class UserRoleTest {
+public class UserRoleTests {
     @Test
     public void equalsContract() {
         //Given

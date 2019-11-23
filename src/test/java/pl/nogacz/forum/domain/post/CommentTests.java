@@ -17,7 +17,7 @@ import java.util.List;
 
 @SpringBootTest
 @RunWith(SpringJUnit4ClassRunner.class)
-public class CommentTest {
+public class CommentTests {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
