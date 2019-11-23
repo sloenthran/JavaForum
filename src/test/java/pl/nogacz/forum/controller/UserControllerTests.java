@@ -88,6 +88,15 @@ public class UserControllerTests {
         this.loginToken = new ObjectMapper().readValue(responseEntity.getBody(), AuthenticationResponseDto.class).getToken();
     }
 
+    private void addMemberAuthoritiesFunction(String username, Role role) throws Exception {
+        User user = this.userService.loadUserByUsername(username);
+        UserRole userRole = this.userRoleService.loadUserRoleByRole(role);
+
+        user.getAuthorities().add(userRole);
+
+        this.userService.saveUser(user);
+    }
+
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void getInfoOfActualUser() throws Exception {
@@ -301,18 +310,131 @@ public class UserControllerTests {
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void removeUser() throws Exception {
-        //TODO
+        //Given
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(loginToken);
+        this.addMemberAuthoritiesFunction("sloenthran", Role.ADMIN);
+
+        HttpEntity httpEntity = new HttpEntity(null, headers);
+
+        //When
+        ResponseEntity<String> responseEntity = this.restTemplate.exchange("http://localhost:" + this.serverPort + "/user/1", HttpMethod.DELETE, httpEntity, String.class);
+
+        //Then
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertTrue(responseEntity.hasBody());
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void removeUserWithBadId() throws Exception {
+        //Given
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(loginToken);
+        this.addMemberAuthoritiesFunction("sloenthran", Role.ADMIN);
+
+        HttpEntity httpEntity = new HttpEntity(null, headers);
+
+        //When
+        ResponseEntity<String> responseEntity = this.restTemplate.exchange("http://localhost:" + this.serverPort + "/user/6", HttpMethod.DELETE, httpEntity, String.class);
+
+        //Then
+        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+        assertTrue(responseEntity.hasBody());
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void removeUserWithUserIsNotAdmin() throws Exception {
+        //Given
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(loginToken);
+        this.addMemberAuthoritiesFunction("sloenthran", Role.MODERATOR);
+
+        HttpEntity httpEntity = new HttpEntity(null, headers);
+
+        //When
+        ResponseEntity<String> responseEntity = this.restTemplate.exchange("http://localhost:" + this.serverPort + "/user/1", HttpMethod.DELETE, httpEntity, String.class);
+
+        //Then
+        assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
+        assertTrue(responseEntity.hasBody());
     }
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void getUsers() throws Exception {
-        //TODO
+        //Given
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(loginToken);
+        this.addMemberAuthoritiesFunction("sloenthran", Role.MODERATOR);
+
+        HttpEntity httpEntity = new HttpEntity(null, headers);
+
+        //When
+        ResponseEntity<String> responseEntity = this.restTemplate.exchange("http://localhost:" + this.serverPort + "/users", HttpMethod.GET, httpEntity, String.class);
+
+        //Then
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertTrue(responseEntity.hasBody());
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void getUsersWithUserIsNotModerator() throws Exception {
+        //Given
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(loginToken);
+
+        HttpEntity httpEntity = new HttpEntity(null, headers);
+
+        //When
+        ResponseEntity<String> responseEntity = this.restTemplate.exchange("http://localhost:" + this.serverPort + "/users", HttpMethod.GET, httpEntity, String.class);
+
+        //Then
+        assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
+        assertTrue(responseEntity.hasBody());
     }
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void getUsersCount() throws Exception {
-        //TODO
+        //Given
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(loginToken);
+        this.addMemberAuthoritiesFunction("sloenthran", Role.MODERATOR);
+
+        HttpEntity httpEntity = new HttpEntity(null, headers);
+
+        //When
+        ResponseEntity<String> responseEntity = this.restTemplate.exchange("http://localhost:" + this.serverPort + "/users/count", HttpMethod.GET, httpEntity, String.class);
+
+        //Then
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertTrue(responseEntity.hasBody());
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void getUsersCountWithUserIsNotModerator() throws Exception {
+        //Given
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(loginToken);
+
+        HttpEntity httpEntity = new HttpEntity(null, headers);
+
+        //When
+        ResponseEntity<String> responseEntity = this.restTemplate.exchange("http://localhost:" + this.serverPort + "/users/count", HttpMethod.GET, httpEntity, String.class);
+
+        //Then
+        assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
+        assertTrue(responseEntity.hasBody());
     }
 }

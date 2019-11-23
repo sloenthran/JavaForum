@@ -59,6 +59,7 @@ public class UserController {
         return this.userMapper.mapListUserToListUserDto(this.userService.loadUsers());
     }
 
+    @PreAuthorize("hasAuthority('MODERATOR')")
     @GetMapping("users/count")
     public Long getUsersCount() {
         return this.userService.getCountUsers();
