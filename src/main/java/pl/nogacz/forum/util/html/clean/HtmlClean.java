@@ -3,13 +3,11 @@ package pl.nogacz.forum.util.html.clean;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import pl.nogacz.forum.config.HtmlCleanConfig;
 
 @Component
-@Data
 @AllArgsConstructor
 public class HtmlClean {
     private HtmlCleanConfig config;

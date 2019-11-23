@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -20,7 +19,6 @@ import java.nio.file.Paths;
 import java.util.List;
 
 @Component
-@Data
 @AllArgsConstructor
 public class EmailValidate {
     private EmailValidateConfig config;
