@@ -1,10 +1,10 @@
 package pl.nogacz.forum.config;
 
-import lombok.Data;
+import lombok.Getter;
 import org.springframework.stereotype.Component;
 
 @Component
-@Data
+@Getter
 public class EmailValidateConfig {
     private String url = "https://community-neutrino-email-validate.p.rapidapi.com/email-validate";
     private String host = "community-neutrino-email-validate.p.rapidapi.com";

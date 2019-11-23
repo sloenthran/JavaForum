@@ -1,10 +1,10 @@
 package pl.nogacz.forum.config;
 
-import lombok.Data;
+import lombok.Getter;
 import org.springframework.stereotype.Component;
 
 @Component
-@Data
+@Getter
 public class HtmlCleanConfig {
     private String url = "https://neutrinoapi-html-clean.p.rapidapi.com/html-clean";
     private String host = "neutrinoapi-html-clean.p.rapidapi.com";

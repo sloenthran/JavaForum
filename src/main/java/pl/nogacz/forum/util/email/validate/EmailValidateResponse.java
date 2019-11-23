@@ -17,9 +17,6 @@ public class EmailValidateResponse {
     @JsonProperty("domain-error")
     private boolean domainError = false;
 
-    @JsonProperty("syntax-error")
-    private boolean syntaxError = false;
-
     @JsonProperty("is-disposable")
     private boolean disposable = false;
 }
