@@ -3,9 +3,7 @@ package pl.nogacz.forum.domain.user;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
@@ -14,9 +12,6 @@ import java.util.List;
 @SpringBootTest
 @RunWith(SpringJUnit4ClassRunner.class)
 public class UserTest {
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     @Test
     public void equalsContract() {
         //Given
@@ -31,7 +26,7 @@ public class UserTest {
                 .id(1L)
                 .authorities(authorities)
                 .username("sloenthran")
-                .password(this.passwordEncoder.encode("password"))
+                .password("password")
                 .email("sloenthran@gmail.com")
                 .build();
 
@@ -39,7 +34,7 @@ public class UserTest {
                 .id(1L)
                 .authorities(authorities)
                 .username("sloenthran")
-                .password(this.passwordEncoder.encode("password"))
+                .password("password")
                 .email("sloenthran@gmail.com")
                 .build();
 
@@ -61,7 +56,7 @@ public class UserTest {
                 .id(1L)
                 .authorities(authorities)
                 .username("sloenthran")
-                .password(this.passwordEncoder.encode("password"))
+                .password("password")
                 .email("sloenthran@gmail.com")
                 .build();
 
@@ -69,7 +64,7 @@ public class UserTest {
                 .id(1L)
                 .authorities(authorities)
                 .username("sloenthran123")
-                .password(this.passwordEncoder.encode("password"))
+                .password("password")
                 .email("sloenthran@gmail.com")
                 .build();
 

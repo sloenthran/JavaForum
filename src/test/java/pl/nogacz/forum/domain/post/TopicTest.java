@@ -97,6 +97,6 @@ public class TopicTest {
         );
 
         //Then
-        Assert.assertEquals(topic, topicTwo);
+        Assert.assertNotEquals(topic, topicTwo);
     }
 }
