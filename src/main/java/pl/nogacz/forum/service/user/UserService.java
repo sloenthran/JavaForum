@@ -85,10 +85,6 @@ public class UserService implements UserDetailsService {
 
         User user = this.loadUserByUsername(username);
 
-        if(user == null) {
-            throw new UserNotFoundException();
-        }
-
         user.setEmail(email);
         this.saveUser(user);
 
