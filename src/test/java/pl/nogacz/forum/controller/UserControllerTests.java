@@ -323,7 +323,6 @@ public class UserControllerTests {
 
         //Then
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertTrue(responseEntity.hasBody());
     }
 
     @Test
