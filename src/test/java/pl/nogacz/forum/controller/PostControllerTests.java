@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.DirtiesContext;
@@ -18,9 +19,7 @@ import pl.nogacz.forum.domain.user.User;
 import pl.nogacz.forum.domain.user.UserRole;
 import pl.nogacz.forum.dto.authentication.AuthenticationRequestDto;
 import pl.nogacz.forum.dto.authentication.AuthenticationResponseDto;
-import pl.nogacz.forum.dto.post.AddCommentRequestDto;
-import pl.nogacz.forum.dto.post.AddTopicRequestDto;
-import pl.nogacz.forum.dto.post.EditCommentRequestDto;
+import pl.nogacz.forum.dto.post.*;
 import pl.nogacz.forum.service.post.PostService;
 import pl.nogacz.forum.service.user.UserRoleService;
 import pl.nogacz.forum.service.user.UserService;
@@ -508,12 +507,51 @@ public class PostControllerTests {
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void changeLike() throws Exception {
-        //TODO
+        //Given
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(loginToken);
+
+        HttpEntity httpEntity = new HttpEntity(null, headers);
+
+        this.addTopicFunction();
+
+        //When
+        ResponseEntity<ChangeLikeResponseDto> responseEntityOne = this.restTemplate.exchange("http://localhost:" + this.serverPort + "/post/topic/like/1", HttpMethod.PUT, httpEntity, new ParameterizedTypeReference<ChangeLikeResponseDto>() {});
+        Long addLikeCount = this.postService.getTopic(1L).getTopic().getLikesCount();
+
+        ResponseEntity<ChangeLikeResponseDto> responseEntityTwo = this.restTemplate.exchange("http://localhost:" + this.serverPort + "/post/topic/like/1", HttpMethod.PUT, httpEntity, new ParameterizedTypeReference<ChangeLikeResponseDto>() {});
+        Long removeLikeCount = this.postService.getTopic(1L).getTopic().getLikesCount();
+
+        //Then
+        assertEquals(HttpStatus.OK, responseEntityOne.getStatusCode());
+        assertEquals(HttpStatus.OK, responseEntityTwo.getStatusCode());
+        assertEquals(1, addLikeCount, 0);
+        assertEquals(0, removeLikeCount, 0);
     }
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void getMostLikedTopics() throws Exception {
-        //TODO
+        //Given
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(loginToken);
+
+        HttpEntity httpEntity = new HttpEntity(null, headers);
+
+        this.addTopicFunction();
+        this.addTopicFunction();
+
+        this.postService.changeLike("sloenthran", 1L);
+        this.postService.changeLike("sloenthran", 2L);
+
+        //When
+        ResponseEntity<List<MostLikedTopicDto>> responseEntity = this.restTemplate.exchange("http://localhost:" + this.serverPort + "/post/topics/likes", HttpMethod.GET, httpEntity, new ParameterizedTypeReference<List<MostLikedTopicDto>>() {});
+
+        //Then
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(2, responseEntity.getBody().size());
+        assertTrue(responseEntity.hasBody());
     }
 }
