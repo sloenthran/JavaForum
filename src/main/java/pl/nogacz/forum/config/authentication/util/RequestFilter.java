@@ -1,8 +1,7 @@
 package pl.nogacz.forum.config.authentication.util;
 
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,7 +31,11 @@ public class RequestFilter extends OncePerRequestFilter {
 
         if(requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
             token = requestTokenHeader.substring(7);
-            username = this.tokenUtil.getUsernameFromToken(token);
+            try {
+                username = this.tokenUtil.getUsernameFromToken(token);
+            } catch (Exception e) {
+                response.setStatus(HttpStatus.BAD_REQUEST.value());
+            }
         }
 
         if(username != null && SecurityContextHolder.getContext().getAuthentication() == null) {

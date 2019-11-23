@@ -1,5 +1,6 @@
 package pl.nogacz.forum.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +16,7 @@ import pl.nogacz.forum.domain.user.Role;
 import pl.nogacz.forum.domain.user.User;
 import pl.nogacz.forum.domain.user.UserRole;
 import pl.nogacz.forum.dto.authentication.AuthenticationRequestDto;
+import pl.nogacz.forum.dto.authentication.AuthenticationResponseDto;
 import pl.nogacz.forum.dto.authentication.RegisterRequestDto;
 import pl.nogacz.forum.service.user.UserRoleService;
 import pl.nogacz.forum.service.user.UserService;
@@ -78,6 +80,28 @@ public class AuthenticationControllerTests {
         //Then
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertTrue(responseEntity.hasBody());
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void reloginWithBadToken() throws Exception {
+        //Given
+        AuthenticationRequestDto authenticationRequestDto = new AuthenticationRequestDto(
+                "sloenthran",
+                "password"
+        );
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth("abcdefgh");
+
+        HttpEntity httpEntity = new HttpEntity(authenticationRequestDto, headers);
+
+        //When
+        ResponseEntity<String> responseEntity = this.restTemplate.exchange("http://localhost:" + this.serverPort + "/login", HttpMethod.POST, httpEntity, String.class);
+
+        //Then
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
     }
 
     @Test
