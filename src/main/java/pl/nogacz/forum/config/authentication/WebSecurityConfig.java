@@ -50,6 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .disable()
                 .authorizeRequests()
                     .antMatchers("/user/**").hasAuthority(Role.USER.toString())
+                    .antMatchers("/login", "/register").anonymous()
                     .antMatchers("/**").permitAll()
                 .anyRequest()
                     .authenticated().and()
