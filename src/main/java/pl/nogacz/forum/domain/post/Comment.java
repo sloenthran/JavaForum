@@ -29,10 +29,7 @@ public class Comment {
     private String text;
 
     @NotNull
-    @ManyToOne(
-            fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL
-    )
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -42,10 +39,7 @@ public class Comment {
     private LocalDateTime createdDate = LocalDateTime.now();
 
     @NotNull
-    @ManyToOne(
-            fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL
-    )
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "topic_id")
     private Topic topic;
 }
