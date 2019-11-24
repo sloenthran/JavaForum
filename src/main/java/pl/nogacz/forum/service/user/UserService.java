@@ -94,6 +94,9 @@ public class UserService implements UserDetailsService {
     public void deleteUserById(final Long id) throws UserNotFoundException {
         User user = this.loadUserById(id);
         user.getAuthorities().removeAll(user.getAuthorities());
+        user.getComments().removeAll(user.getComments());
+        user.getLikes().removeAll(user.getLikes());
+        user.getLogs().removeAll(user.getLogs());
 
         this.userRepository.delete(user);
     }

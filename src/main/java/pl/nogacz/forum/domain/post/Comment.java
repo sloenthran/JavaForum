@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
-import org.springframework.data.annotation.CreatedDate;
 import pl.nogacz.forum.domain.user.User;
 
 import javax.persistence.*;

@@ -72,7 +72,7 @@ public class User implements UserDetails {
 
     @OneToMany(
             targetEntity = Comment.class,
-            cascade = CascadeType.PERSIST,
+            cascade = CascadeType.ALL,
             mappedBy = "user",
             fetch = FetchType.LAZY
     )
@@ -81,7 +81,7 @@ public class User implements UserDetails {
 
     @OneToMany(
             targetEntity = Log.class,
-            cascade = CascadeType.PERSIST,
+            cascade = CascadeType.ALL,
             mappedBy = "user",
             fetch = FetchType.LAZY
     )
@@ -90,7 +90,7 @@ public class User implements UserDetails {
 
     @OneToMany(
             targetEntity = Like.class,
-            cascade = CascadeType.PERSIST,
+            cascade = CascadeType.ALL,
             mappedBy = "user",
             fetch = FetchType.LAZY
     )

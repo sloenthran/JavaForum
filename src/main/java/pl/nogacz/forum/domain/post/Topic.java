@@ -31,7 +31,7 @@ public class Topic {
     @NotNull
     @OneToMany(
             targetEntity = Comment.class,
-            cascade = CascadeType.PERSIST,
+            cascade = CascadeType.ALL,
             mappedBy = "topic",
             fetch = FetchType.EAGER
     )
@@ -43,7 +43,7 @@ public class Topic {
 
     @OneToMany(
             targetEntity = Like.class,
-            cascade = CascadeType.PERSIST,
+            cascade = CascadeType.ALL,
             mappedBy = "topic",
             fetch = FetchType.LAZY
     )
