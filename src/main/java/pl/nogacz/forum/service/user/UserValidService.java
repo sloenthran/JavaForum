@@ -14,6 +14,7 @@ import javax.transaction.Transactional;
 @Transactional
 @AllArgsConstructor
 public class UserValidService {
+    public static final int MIN_PASSWORD_LENGTH = 6;
     private UserRepository userRepository;
     private EmailValidate emailValidate;
 
@@ -26,7 +27,7 @@ public class UserValidService {
     }
 
     public void validPassword(String password) throws Exception {
-        if(password.length() < 6) {
+        if(password.length() < MIN_PASSWORD_LENGTH) {
             throw new PasswordTooShortException();
         }
     }
@@ -37,3 +38,4 @@ public class UserValidService {
         }
     }
 }
+
